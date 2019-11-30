@@ -1,0 +1,31 @@
+{
+  "name": "@schuchard/tailwind-schematic",
+  "version": "0.0.0",
+  "description": "Add tailwind to an Angular project",
+  "scripts": {
+    "clean:launch": "yarn clean && yarn launch",
+    "dev": "yarn build:clean:launch",
+    "publish": "yarn build",
+    "test:schematic": "yarn build && jasmine src/**/*_spec.js",
+    "build": "bash ./scripts/build.sh",
+    "clean": "git checkout HEAD -- ../../sandboxes && git clean -f -d ../../sandboxes",
+    "build:clean:launch": "yarn build && yarn clean && yarn launch",
+    "launch": "yarn link:sandbox && cd ../../sandboxe/single-app && yarn && ./node_modules/.bin/ng g @schuchard/tailwind-schematic:tailwind-schematic",
+    "test": "yarn build:clean:launch && yarn test:sandbox && yarn clean",
+    "test:unit": "yarn build:watch && jasmine src/**/*_spec.js",
+    "test:sandbox": "cd ../../sandbox/single-app && yarn lint && yarn test --no-cache && yarn build",
+    "link:sandbox": "yarn link && cd ../../sandbox/single-app && yarn link @schuchard/tailwind-schematic:tailwind-schematic",
+    "release": "np"
+  },
+  "keywords": [
+    "schematics"
+  ],
+  "author": "Kevin Schuchard",
+  "license": "MIT",
+  "schematics": "./collection.json",
+  "dependencies": {},
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {}
+}

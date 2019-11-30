@@ -1,41 +1,33 @@
 {
-  "name": "schematic-starter",
+  "name": "@schuchard/ng-tools",
   "version": "0.0.0",
-  "description": "A blank schematics",
+  "description": "Schematic collection",
   "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "build:clean:launch": "yarn build && yarn clean:launch",
-    "clean": "git checkout HEAD -- sandbox && git clean -f -d sandbox",
-    "clean:launch": "yarn clean && yarn launch",
-    "dev": "yarn build:clean:launch",
-    "launch": "cd sandbox && yarn && yarn ng g schematic-starter:schematic-starter",
-    "launch:schematic:noPrompts": "yarn link:sandbox && cd sandbox && yarn && yarn ng g schematic-starter:schematic-starter",
-    "link:schematic": "yarn link && cd sandbox && yarn link schematic-starter",
-    "publish": "yarn build",
-    "test": "yarn build:clean:launch && yarn test:sandbox && yarn clean",
-    "test:ci": "yarn link:schematic && yarn test",
-    "test:schematic": "npm run build && jasmine src/**/*_spec.js",
-    "test:sandbox": "cd sandbox && yarn lint && yarn test && yarn e2e && yarn build",
-    "test:unit": "yarn build && jasmine src/**/*_spec.js",
-    "update:sandbox": "cd sandbox && ng update --all"
+    "bootstrap": "yarn",
+    "lerna": "lerna",
+    "test": "lerna run test --stream"
   },
   "keywords": [
     "schematics"
   ],
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "license": "MIT",
-  "schematics": "./src/collection.json",
   "dependencies": {
     "@angular-devkit/core": "8.2.0",
     "@angular-devkit/schematics": "8.2.0",
     "@types/jasmine": "^2.6.0",
-    "@types/node": "^8.0.31",
+    "@types/node": "^12.12.14",
     "jasmine": "^2.8.0",
     "typescript": "~3.1.6"
   },
   "devDependencies": {
-    "husky": "1.1.4",
-    "lint-staged": "8.0.5",
-    "prettier": "~1.18.2"
+    "husky": "3.1.0",
+    "lerna": "^3.19.0",
+    "lint-staged": "9.5.0",
+    "prettier": "~1.19.1"
   },
   "husky": {
     "hooks": {
