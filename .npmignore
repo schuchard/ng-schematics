@@ -3,7 +3,7 @@
 !*.d.ts
 
 *.js.map
-!src/**/__files__/**/*.js
-!src/**/files/**/*.ts
+!packages/src/**/__files__/**/*.js
+!packages/src/**/files/**/*.ts
 *.vscode
 sandbox
