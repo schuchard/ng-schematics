@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": "tsconfig",
+    "baseUrl": "./",
     "lib": ["es2018", "dom"],
     "declaration": true,
     "module": "commonjs",
@@ -11,7 +11,7 @@
     "noImplicitThis": true,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
-    "rootDir": "src/",
+    "rootDir": "packages/",
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
     "sourceMap": true,
@@ -19,5 +19,5 @@
     "target": "es6",
     "types": ["jasmine", "node"]
   },
-  "exclude": ["src/*/files/**/*", "sandbox"]
+  "exclude": ["node_modules", "sandbox"]
 }
