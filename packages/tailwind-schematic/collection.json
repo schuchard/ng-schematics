@@ -3,11 +3,11 @@
   "schematics": {
     "tailwind-schematic": {
       "description": "A blank schematic.",
-      "factory": "./dist/tailwind-schematic/index#tailwindSchematic"
+      "factory": "./dist/tailwind-schematic/src/index#tailwindSchematic"
     },
     "ng-add": {
       "description": "Add SchematicStarter to an application.",
-      "factory": "./dist/tailwind-schematic/index#tailwindSchematic"
+      "factory": "./dist/tailwind-schematic/src/index#tailwindSchematic"
     }
   }
 }

@@ -5,5 +5,5 @@
 *.js.map
 !packages/src/**/__files__/**/*.js
 !packages/src/**/files/**/*.ts
-*.vscode
+.vscode/*
 sandbox
