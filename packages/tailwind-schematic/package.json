@@ -10,7 +10,7 @@
     "build": "bash ./scripts/build.sh",
     "clean": "git checkout HEAD -- ../../sandbox && git clean -f -d ../../sandbox",
     "build:clean:launch": "yarn build && yarn clean && yarn launch",
-    "launch": "yarn link:sandbox && cd ../../sandbox/single-app && yarn && ./node_modules/.bin/ng g @schuchard/tailwind-schematic:tailwind-schematic",
+    "launch": "yarn link:sandbox && cd ../../sandbox/single-app && yarn && ./node_modules/.bin/ng add @schuchard/tailwind-schematic",
     "test": "yarn build:clean:launch && yarn test:sandbox && yarn clean",
     "test:unit": "yarn build:watch && jasmine src/**/*_spec.js",
     "test:sandbox": "cd ../../sandbox/single-app && yarn lint && yarn test --no-cache && yarn build",
