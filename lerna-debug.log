@@ -1,0 +1,11 @@
+0 silly argv { _: [ 'run' ],
+0 silly argv   lernaVersion: '3.19.0',
+0 silly argv   '$0':
+0 silly argv    '/Users/schuchard/dev/repos/ng-tools/node_modules/.bin/lerna',
+0 silly argv   script: 'tsc' }
+1 notice cli v3.19.0
+2 verbose rootPath /Users/schuchard/dev/repos/ng-tools
+3 info versioning independent
+4 error JSONError: Unexpected string in JSON at position 158 while parsing '{  "name": "@schuchard/tailwind-schemat' in packages/tailwind-schematic/package.json
+4 error     at module.exports (/Users/schuchard/dev/repos/ng-tools/node_modules/parse-json/index.js:26:19)
+4 error     at parse (/Users/schuchard/dev/repos/ng-tools/node_modules/load-json-file/index.js:15:9)

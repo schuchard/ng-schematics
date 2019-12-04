@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "description": "Add tailwind to an Angular project",
   "scripts": {
+    "tsc": "tsc",
     "clean:launch": "yarn clean && yarn launch",
     "dev": "yarn build:clean:launch",
     "publish": "yarn build",
@@ -23,9 +24,15 @@
   "author": "Kevin Schuchard",
   "license": "MIT",
   "schematics": "./collection.json",
-  "dependencies": {},
+  "dependencies": {
+    "@schuchard/schematic-utils": "^0.1.0"
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "publishConfig": {
     "access": "public"
-  },
-  "devDependencies": {}
+  }
 }

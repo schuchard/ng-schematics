@@ -3,7 +3,7 @@
   "schematics": {
     "ng-add": {
       "description": "Add SchematicStarter to an application.",
-      "factory": "./dist/tailwind-schematic/src/index#tailwindSchematic"
+      "factory": "./dist/index#tailwindSchematic"
     }
   }
 }

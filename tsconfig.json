@@ -19,5 +19,5 @@
     "target": "es6",
     "types": ["jasmine", "node"]
   },
-  "exclude": ["node_modules", "sandbox"]
+  "exclude": ["node_modules", "sandbox", "dist"]
 }
