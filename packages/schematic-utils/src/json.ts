@@ -18,7 +18,7 @@ export function parseJsonAtPath(tree: Tree, path: string): JsonValue {
   const buffer = tree.read(path);
 
   if (buffer === null) {
-    throw new SchematicsException('Could not read package.json.');
+    throw new SchematicsException(`Could not JSON at ${path}`);
   }
 
   const content = buffer.toString();

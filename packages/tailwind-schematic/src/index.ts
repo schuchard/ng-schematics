@@ -8,6 +8,7 @@ import {
   NodeDependencyType,
   NodePackage,
   PkgJson,
+  parseJsonAtPath,
 } from '@schuchard/schematic-utils';
 import { concat, Observable, of } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
@@ -19,26 +20,28 @@ interface SchematicOptions {
 
 export function tailwindSchematic(_options: SchematicOptions): Rule {
   return async (tree: Tree, _context: SchematicContext) => {
-    const f = await getProject(tree, _options);
-    console.log('f ->', JSON.stringify(f, null, 2));
+    await determineProject(tree, _options);
 
-    return chain([updateDependencies()]);
+    return chain([updateDependencies(), updateAngularJson(_options)]);
   };
 }
 
-async function getProject(tree: Tree, _options: SchematicOptions): Promise<ProjectDefinition> {
+async function determineProject(
+  tree: Tree,
+  _options: SchematicOptions
+): Promise<{ project: ProjectDefinition; targetProject: string }> {
   const workspace = await getWorkspace(tree);
+
   const targetProject: string = _options.project || (workspace.extensions.defaultProject as string);
   const project = workspace.projects.get(targetProject);
-
-  console.log('targetProject -> ', targetProject);
-  console.log('workspace ->', JSON.stringify(workspace, null, 2));
 
   if (project === undefined) {
     throw new Error('No project found in workspace');
   }
 
-  return project;
+  _options.project = targetProject;
+
+  return { project, targetProject };
 }
 
 function updateDependencies(): Rule {
@@ -86,5 +89,14 @@ function updateDependencies(): Rule {
     );
 
     return concat(addDependencies, addDevDependencies);
+  };
+}
+
+function updateAngularJson(_options: SchematicOptions): Rule {
+  return (tree: Tree, _context: SchematicContext) => {
+    // todo determine the angular.json path
+    const angularJson = parseJsonAtPath(tree, './angular.json');
+    console.log('angularJson ->', JSON.stringify(angularJson, null, 2));
+    return tree;
   };
 }
