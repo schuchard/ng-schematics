@@ -1,17 +1,16 @@
-import { Rule, SchematicContext, Tree, SchematicsException } from '@angular-devkit/schematics';
-import { Observable, from, forkJoin, of, concat } from 'rxjs';
-import { catchError, map, concatMap } from 'rxjs/operators';
 import { ProjectDefinition } from '@angular-devkit/core/src/workspace';
+import { chain, Rule, SchematicContext, Tree } from '@angular-devkit/schematics';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
-
 import {
-  getWorkspace,
   getLatestNodeVersion,
-  NodePackage,
-  NodeDependencyType,
-  PkgJson,
+  getWorkspace,
   mergePackageJson,
+  NodeDependencyType,
+  NodePackage,
+  PkgJson,
 } from '@schuchard/schematic-utils';
+import { concat, Observable, of } from 'rxjs';
+import { concatMap, map } from 'rxjs/operators';
 
 interface SchematicOptions {
   project: string;
@@ -19,15 +18,11 @@ interface SchematicOptions {
 }
 
 export function tailwindSchematic(_options: SchematicOptions): Rule {
-  return (tree: Tree, _context: SchematicContext): Observable<Tree> => {
-    return forkJoin(from(getProject(tree, _options)), updateDependencies()).pipe(
-      catchError((err) => {
-        throw new SchematicsException(err);
-      }),
-      map(() => {
-        return tree;
-      })
-    );
+  return async (tree: Tree, _context: SchematicContext) => {
+    const f = await getProject(tree, _options);
+    console.log('f ->', JSON.stringify(f, null, 2));
+
+    return chain([updateDependencies()]);
   };
 }
 

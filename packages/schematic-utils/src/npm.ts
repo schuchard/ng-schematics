@@ -1,4 +1,4 @@
-import { get } from 'https';
+import { get } from 'http';
 
 export interface NodePackage {
   name: string;

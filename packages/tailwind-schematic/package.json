@@ -14,7 +14,7 @@
     "launch": "yarn link:sandbox && cd ../../sandbox/single-app && yarn && ./node_modules/.bin/ng add @schuchard/tailwind-schematic",
     "test": "yarn build:clean:launch && yarn test:sandbox && yarn clean",
     "test:unit": "yarn build:watch && jasmine src/**/*_spec.js",
-    "test:sandbox": "cd ../../sandbox/single-app && yarn lint && yarn test --no-cache && yarn build",
+    "test:sandbox": "cd ../../sandbox/single-app && yarn lint && yarn test && yarn build",
     "link:sandbox": "yarn link && cd ../../sandbox/single-app && yarn link @schuchard/tailwind-schematic",
     "release": "np"
   },
