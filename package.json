@@ -5,7 +5,8 @@
   "scripts": {
     "bootstrap": "yarn",
     "lerna": "lerna",
-    "test": "lerna run tsc && lerna run test --stream"
+    "test": "lerna run tsc && lerna run test --stream",
+    "clean": "lerna run clean"
   },
   "keywords": [
     "schematics"

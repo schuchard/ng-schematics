@@ -64,6 +64,27 @@ function updateDependencies(): Rule {
       })
     );
 
-    return concat(addDependencies);
+    const addDevDependencies = of(
+      '@angular-builders/custom-webpack',
+      '@fullhuman/postcss-purgecss'
+    ).pipe(
+      concatMap((packageName: string) => getLatestNodeVersion(packageName)),
+      map((packageFromRegistry: NodePackage) => {
+        const { name, version } = packageFromRegistry;
+        context.logger.debug(`Adding ${name}:${version} to ${NodeDependencyType.Dev}`);
+
+        tree.overwrite(
+          PkgJson.Path,
+          JSON.stringify(
+            mergePackageJson(tree, { [NodeDependencyType.Dev]: { [name]: version } }),
+            null,
+            2
+          )
+        );
+        return tree;
+      })
+    );
+
+    return concat(addDependencies, addDevDependencies);
   };
 }
