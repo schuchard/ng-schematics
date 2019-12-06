@@ -1,6 +1,15 @@
 import { JsonObject, normalize } from '@angular-devkit/core';
 import { ProjectDefinition } from '@angular-devkit/core/src/workspace';
-import { chain, Rule, SchematicContext, Tree } from '@angular-devkit/schematics';
+import {
+  chain,
+  Rule,
+  SchematicContext,
+  Tree,
+  apply,
+  url,
+  move,
+  mergeWith,
+} from '@angular-devkit/schematics';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import {
   getLatestNodeVersion,
@@ -11,7 +20,7 @@ import {
   parseJsonAtPath,
   PkgJson,
 } from '@schuchard/schematic-utils';
-import { isArray, mergeWith } from 'lodash';
+import { isArray, mergeWith as mergeWithLodash } from 'lodash';
 import { concat, Observable, of } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
 
@@ -29,10 +38,9 @@ interface SchematicOptions {
 
 export function tailwindSchematic(_options: SchematicOptions): Rule {
   return async (tree: Tree, _context: SchematicContext) => {
-    const p = await determineProject(tree, _options);
-    console.log('p ->', JSON.stringify(p, null, 2));
+    await determineProject(tree, _options);
 
-    return chain([updateDependencies(), updateAngularJson(_options)]);
+    return chain([updateDependencies(), updateAngularJson(_options), addFiles()]);
   };
 }
 
@@ -140,7 +148,7 @@ function updateAngularJson(_options: SchematicOptions): Rule {
 
     tree.overwrite(
       './angular.json',
-      JSON.stringify(mergeWith(angularJson, updates, mergeCustomizer), null, 2)
+      JSON.stringify(mergeWithLodash(angularJson, updates, mergeCustomizer), null, 2)
     );
     return tree;
   };
@@ -152,8 +160,8 @@ function mergeCustomizer(objValue: JsonObject, srcValue: JsonObject) {
   }
 }
 
-// function addFiles(): Rule {
-//   return (t) => {
-//     return mergeWith(apply(url('./files'), [move('./')]));
-//   };
-// }
+function addFiles(): Rule {
+  return () => {
+    return mergeWith(apply(url('./files'), [move('./')]));
+  };
+}
