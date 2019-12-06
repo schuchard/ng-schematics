@@ -1,14 +1,14 @@
 import { JsonObject, normalize } from '@angular-devkit/core';
 import { ProjectDefinition } from '@angular-devkit/core/src/workspace';
 import {
+  apply,
   chain,
+  mergeWith,
+  move,
   Rule,
   SchematicContext,
   Tree,
-  apply,
   url,
-  move,
-  mergeWith,
 } from '@angular-devkit/schematics';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import {
@@ -17,6 +17,7 @@ import {
   mergePackageJson,
   NodeDependencyType,
   NodePackage,
+  normalizePath,
   parseJsonAtPath,
   PkgJson,
 } from '@schuchard/schematic-utils';
@@ -36,31 +37,30 @@ interface SchematicOptions {
   inlineStyles: boolean;
 }
 
-export function tailwindSchematic(_options: SchematicOptions): Rule {
+export function tailwindSchematic(options: SchematicOptions): Rule {
   return async (tree: Tree, _context: SchematicContext) => {
-    await determineProject(tree, _options);
+    await determineProject(tree, options);
 
-    return chain([updateDependencies(), updateAngularJson(_options), addFiles()]);
+    return chain([updateDependencies(), updateAngularJson(options), addFiles(options)]);
   };
 }
 
 async function determineProject(
   tree: Tree,
-  _options: SchematicOptions
+  options: SchematicOptions
 ): Promise<{ project: ProjectDefinition }> {
   const workspace = await getWorkspace(tree);
 
-  const projectName: string = _options.project || (workspace.extensions.defaultProject as string);
+  const projectName: string = options.project || (workspace.extensions.defaultProject as string);
   const project = workspace.projects.get(projectName);
 
   if (project === undefined) {
     throw new Error('No project found in workspace');
   }
-
   // update with project metadata
-  _options.project = projectName;
-  _options.projectRoot = project.root;
-  _options.projectSourceRoot = project.sourceRoot || '';
+  options.project = projectName;
+  options.projectRoot = normalizePath(project.root);
+  options.projectSourceRoot = normalizePath(project.sourceRoot || '');
 
   return { project };
 }
@@ -113,10 +113,10 @@ function updateDependencies(): Rule {
   };
 }
 
-function updateAngularJson(_options: SchematicOptions): Rule {
+function updateAngularJson(options: SchematicOptions): Rule {
   return (tree: Tree, _context: SchematicContext) => {
     const angularJson = parseJsonAtPath(tree, './angular.json') as any;
-    const { project, projectRoot } = _options;
+    const { project, projectRoot } = options;
     const stylesheetPath = normalize(`${projectRoot}/src/tailwind.scss`);
     const webpackConfig = {
       customWebpackConfig: {
@@ -160,8 +160,11 @@ function mergeCustomizer(objValue: JsonObject, srcValue: JsonObject) {
   }
 }
 
-function addFiles(): Rule {
+function addFiles(options: SchematicOptions): Rule {
   return () => {
-    return mergeWith(apply(url('./files'), [move('./')]));
+    return chain([
+      mergeWith(apply(url('./files/root'), [move('./')])),
+      mergeWith(apply(url('./files/project'), [move(options.projectSourceRoot)])),
+    ]);
   };
 }
