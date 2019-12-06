@@ -1,3 +1,4 @@
+import { JsonObject, normalize } from '@angular-devkit/core';
 import { ProjectDefinition } from '@angular-devkit/core/src/workspace';
 import { chain, Rule, SchematicContext, Tree } from '@angular-devkit/schematics';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
@@ -10,10 +11,9 @@ import {
   parseJsonAtPath,
   PkgJson,
 } from '@schuchard/schematic-utils';
+import { isArray, mergeWith } from 'lodash';
 import { concat, Observable, of } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
-import { mergeWith, isArray } from 'lodash';
-import { JsonObject, normalize } from '@angular-devkit/core';
 
 const enum Paths {
   WebpackConfig = 'webpack-config.js',
@@ -29,7 +29,8 @@ interface SchematicOptions {
 
 export function tailwindSchematic(_options: SchematicOptions): Rule {
   return async (tree: Tree, _context: SchematicContext) => {
-    await determineProject(tree, _options);
+    const p = await determineProject(tree, _options);
+    console.log('p ->', JSON.stringify(p, null, 2));
 
     return chain([updateDependencies(), updateAngularJson(_options)]);
   };
@@ -106,9 +107,7 @@ function updateDependencies(): Rule {
 
 function updateAngularJson(_options: SchematicOptions): Rule {
   return (tree: Tree, _context: SchematicContext) => {
-    console.log('here');
-
-    const aj = parseJsonAtPath(tree, './angular.json') as any;
+    const angularJson = parseJsonAtPath(tree, './angular.json') as any;
     const { project, projectRoot } = _options;
     const stylesheetPath = normalize(`${projectRoot}/src/tailwind.scss`);
     const webpackConfig = {
@@ -141,7 +140,7 @@ function updateAngularJson(_options: SchematicOptions): Rule {
 
     tree.overwrite(
       './angular.json',
-      JSON.stringify(mergeWith(aj, updates, mergeCustomizer), null, 2)
+      JSON.stringify(mergeWith(angularJson, updates, mergeCustomizer), null, 2)
     );
     return tree;
   };
@@ -152,3 +151,9 @@ function mergeCustomizer(objValue: JsonObject, srcValue: JsonObject) {
     return objValue.concat(srcValue);
   }
 }
+
+// function addFiles(): Rule {
+//   return (t) => {
+//     return mergeWith(apply(url('./files'), [move('./')]));
+//   };
+// }
