@@ -1,6 +1,6 @@
 # Outputs
 **/dist
-!**/packages/**/files/**/*.js
+!**/packages/**/__files__/**/*.js
 lerna-debug.log*
 
 # IDEs

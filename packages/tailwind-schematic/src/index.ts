@@ -15,7 +15,7 @@ import { concatMap, map } from 'rxjs/operators';
 import { mergeWith, isArray } from 'lodash';
 import { JsonObject, normalize } from '@angular-devkit/core';
 
-const enum Names {
+const enum Paths {
   WebpackConfig = 'webpack-config.js',
 }
 
@@ -111,6 +111,11 @@ function updateAngularJson(_options: SchematicOptions): Rule {
     const aj = parseJsonAtPath(tree, './angular.json') as any;
     const { project, projectRoot } = _options;
     const stylesheetPath = normalize(`${projectRoot}/src/tailwind.scss`);
+    const webpackConfig = {
+      customWebpackConfig: {
+        path: Paths.WebpackConfig,
+      },
+    };
 
     const updates = {
       projects: {
@@ -119,18 +124,14 @@ function updateAngularJson(_options: SchematicOptions): Rule {
             build: {
               builder: '@angular-builders/custom-webpack:browser',
               options: {
-                customWebpackConfig: {
-                  path: Names.WebpackConfig,
-                },
+                ...webpackConfig,
                 styles: [stylesheetPath],
               },
             },
             serve: {
               builder: '@angular-builders/custom-webpack:dev-server',
               options: {
-                customWebpackConfig: {
-                  path: Names.WebpackConfig,
-                },
+                ...webpackConfig,
               },
             },
           },
