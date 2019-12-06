@@ -1,6 +1,6 @@
 {
   "name": "@schuchard/tailwind-schematic",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Add tailwind to an Angular project",
   "scripts": {
     "tsc": "tsc",
