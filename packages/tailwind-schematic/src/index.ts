@@ -7,14 +7,23 @@ import {
   mergePackageJson,
   NodeDependencyType,
   NodePackage,
-  PkgJson,
   parseJsonAtPath,
+  PkgJson,
 } from '@schuchard/schematic-utils';
 import { concat, Observable, of } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
+import { mergeWith, isArray } from 'lodash';
+import { JsonObject, normalize } from '@angular-devkit/core';
+
+const enum Names {
+  WebpackConfig = 'webpack-config.js',
+}
 
 interface SchematicOptions {
   project: string;
+  webpackConfigPath: string;
+  projectRoot: string;
+  projectSourceRoot: string;
   inlineStyles: boolean;
 }
 
@@ -29,19 +38,22 @@ export function tailwindSchematic(_options: SchematicOptions): Rule {
 async function determineProject(
   tree: Tree,
   _options: SchematicOptions
-): Promise<{ project: ProjectDefinition; targetProject: string }> {
+): Promise<{ project: ProjectDefinition }> {
   const workspace = await getWorkspace(tree);
 
-  const targetProject: string = _options.project || (workspace.extensions.defaultProject as string);
-  const project = workspace.projects.get(targetProject);
+  const projectName: string = _options.project || (workspace.extensions.defaultProject as string);
+  const project = workspace.projects.get(projectName);
 
   if (project === undefined) {
     throw new Error('No project found in workspace');
   }
 
-  _options.project = targetProject;
+  // update with project metadata
+  _options.project = projectName;
+  _options.projectRoot = project.root;
+  _options.projectSourceRoot = project.sourceRoot || '';
 
-  return { project, targetProject };
+  return { project };
 }
 
 function updateDependencies(): Rule {
@@ -94,9 +106,48 @@ function updateDependencies(): Rule {
 
 function updateAngularJson(_options: SchematicOptions): Rule {
   return (tree: Tree, _context: SchematicContext) => {
-    // todo determine the angular.json path
-    const angularJson = parseJsonAtPath(tree, './angular.json');
-    console.log('angularJson ->', JSON.stringify(angularJson, null, 2));
+    console.log('here');
+
+    const aj = parseJsonAtPath(tree, './angular.json') as any;
+    const { project, projectRoot } = _options;
+    const stylesheetPath = normalize(`${projectRoot}/src/tailwind.scss`);
+
+    const updates = {
+      projects: {
+        [project]: {
+          architect: {
+            build: {
+              builder: '@angular-builders/custom-webpack:browser',
+              options: {
+                customWebpackConfig: {
+                  path: Names.WebpackConfig,
+                },
+                styles: [stylesheetPath],
+              },
+            },
+            serve: {
+              builder: '@angular-builders/custom-webpack:dev-server',
+              options: {
+                customWebpackConfig: {
+                  path: Names.WebpackConfig,
+                },
+              },
+            },
+          },
+        },
+      },
+    };
+
+    tree.overwrite(
+      './angular.json',
+      JSON.stringify(mergeWith(aj, updates, mergeCustomizer), null, 2)
+    );
     return tree;
   };
+}
+
+function mergeCustomizer(objValue: JsonObject, srcValue: JsonObject) {
+  if (isArray(objValue)) {
+    return objValue.concat(srcValue);
+  }
 }

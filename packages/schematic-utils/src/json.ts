@@ -1,5 +1,5 @@
 import { Tree, SchematicsException } from '@angular-devkit/schematics';
-import { parseJsonAst, JsonParseMode, JsonValue } from '@angular-devkit/core';
+import { parseJsonAst, JsonParseMode, JsonValue, JsonObject } from '@angular-devkit/core';
 import { merge } from 'lodash';
 import { PkgJson } from './npm';
 
@@ -8,13 +8,10 @@ export function mergePackageJson(
   mergeObject: JsonValue,
   path = PkgJson.Path
 ): JsonValue {
-  const pj = parseJsonAtPath(tree, path);
-  console.log('pj ->', JSON.stringify(pj, null, 2));
-
-  return merge(pj, mergeObject);
+  return merge(parseJsonAtPath(tree, path), mergeObject);
 }
 
-export function parseJsonAtPath(tree: Tree, path: string): JsonValue {
+export function parseJsonAtPath(tree: Tree, path: string): JsonObject {
   const buffer = tree.read(path);
 
   if (buffer === null) {
@@ -24,8 +21,9 @@ export function parseJsonAtPath(tree: Tree, path: string): JsonValue {
   const content = buffer.toString();
 
   const json = parseJsonAst(content, JsonParseMode.Strict);
+
   if (json.kind != 'object') {
-    throw new SchematicsException('Invalid package.json. Was expecting an object');
+    throw new SchematicsException('Invalid json. Was expecting an object');
   }
 
   return json.value;
