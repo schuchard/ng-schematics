@@ -1,6 +1,7 @@
 # Outputs
 **/dist
 !**/packages/**/files/**/*.js
+lerna-debug.log*
 
 # IDEs
 .idea/
