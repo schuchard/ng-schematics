@@ -1,4 +1,3 @@
-import { ProjectDefinition } from '@angular-devkit/core/src/workspace';
 import {
   apply,
   chain,
@@ -11,12 +10,12 @@ import {
 } from '@angular-devkit/schematics';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import {
-  getWorkspace,
+  addPackageJsonDep,
+  determineProject,
   mergeJsonTree,
   NodeDependencyType,
   parseJsonAtPath,
   parsePath,
-  addPackageJsonDep,
 } from '@schuchard/schematic-utils';
 import { concat, Observable } from 'rxjs';
 
@@ -34,30 +33,11 @@ interface SchematicOptions {
 
 export function tailwindSchematic(options: SchematicOptions): Rule {
   return async (tree: Tree, _context: SchematicContext) => {
-    await determineProject(tree, options);
+    const { workspace } = await determineProject(tree, options.project);
+    options = { ...workspace, ...options };
 
     return chain([updateDependencies(), updateAngularJson(options), addFiles(options)]);
   };
-}
-
-async function determineProject(
-  tree: Tree,
-  options: SchematicOptions
-): Promise<{ project: ProjectDefinition }> {
-  const workspace = await getWorkspace(tree);
-
-  const projectName: string = options.project || (workspace.extensions.defaultProject as string);
-  const project = workspace.projects.get(projectName);
-
-  if (project === undefined) {
-    throw new Error('No project found in workspace');
-  }
-  // update with project metadata
-  options.project = projectName;
-  options.projectRoot = parsePath(project.root).path;
-  options.projectSourceRoot = parsePath(project.sourceRoot || '').path;
-
-  return { project };
 }
 
 function updateDependencies(): Rule {
