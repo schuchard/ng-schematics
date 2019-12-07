@@ -12,6 +12,7 @@ import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import {
   addPackageJsonDep,
   determineProject,
+  filterExistingPath,
   mergeJsonTree,
   NodeDependencyType,
   parseJsonAtPath,
@@ -21,6 +22,7 @@ import { concat, Observable } from 'rxjs';
 
 const enum Paths {
   WebpackConfig = 'webpack-config.js',
+  TailwindConfig = 'tailwind.config.js',
 }
 
 interface SchematicOptions {
@@ -94,9 +96,15 @@ function updateAngularJson(options: SchematicOptions): Rule {
 }
 
 function addFiles(options: SchematicOptions): Rule {
-  return () => {
+  return (tree: Tree) => {
     return chain([
-      mergeWith(apply(url('./files/root'), [move('./')])),
+      mergeWith(
+        apply(url('./files/root'), [
+          filterExistingPath(tree, Paths.WebpackConfig),
+          filterExistingPath(tree, Paths.TailwindConfig),
+          move('./'),
+        ])
+      ),
       mergeWith(apply(url('./files/project'), [move(options.projectSourceRoot)])),
     ]);
   };
