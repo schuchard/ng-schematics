@@ -1,4 +1,4 @@
-import { JsonObject, normalize } from '@angular-devkit/core';
+import { JsonObject } from '@angular-devkit/core';
 import { ProjectDefinition } from '@angular-devkit/core/src/workspace';
 import {
   apply,
@@ -116,8 +116,8 @@ function updateDependencies(): Rule {
 function updateAngularJson(options: SchematicOptions): Rule {
   return (tree: Tree, _context: SchematicContext) => {
     const angularJson = parseJsonAtPath(tree, './angular.json') as any;
-    const { project, projectRoot } = options;
-    const stylesheetPath = normalize(`${projectRoot}/src/tailwind.scss`);
+    const { project, projectSourceRoot } = options;
+    const stylesheetPath = parsePath(`${projectSourceRoot}/tailwind.scss`).path;
     const webpackConfig = {
       customWebpackConfig: {
         path: Paths.WebpackConfig,
