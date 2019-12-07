@@ -1,17 +1,5 @@
 import test from 'ava';
-import { normalizePath, parsePath } from './path';
-
-test('normalizePath: a', (t) => {
-  t.is(normalizePath('a'), 'a');
-});
-
-test('normalizePath: a/b', (t) => {
-  t.is(normalizePath('a/b'), 'a/b');
-});
-
-test('normalizePath: /a/b', (t) => {
-  t.is(normalizePath('a/b'), 'a/b');
-});
+import { parsePath } from './path';
 
 test('parseName: should return path info', (t) => {
   t.deepEqual(parsePath('a'), { dirname: '', path: 'a', filename: 'a' });

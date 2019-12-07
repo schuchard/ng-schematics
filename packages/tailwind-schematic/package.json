@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "description": "Add tailwind to an Angular project",
   "scripts": {
-    "tsc": "tsc",
     "clean:launch": "yarn clean && yarn launch",
     "dev": "yarn build:clean:launch",
     "publish": "yarn build",
@@ -13,7 +12,6 @@
     "build:clean:launch": "yarn build && yarn clean && yarn launch",
     "launch": "yarn link:sandbox && cd ../../sandbox/test-workspace && yarn && ./node_modules/.bin/ng add @schuchard/tailwind-schematic",
     "test": "yarn build:clean:launch && yarn test:sandbox && yarn clean",
-    "test:unit": "yarn build:watch && jasmine src/**/*_spec.js",
     "test:sandbox": "cd ../../sandbox/test-workspace && yarn lint && yarn test && yarn build",
     "link:sandbox": "yarn link && cd ../../sandbox/test-workspace && yarn link @schuchard/tailwind-schematic",
     "release": "np"

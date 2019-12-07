@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Schematic Utilities",
   "scripts": {
-    "tsc": "rm -rf dist && tsc",
+    "build": "rm -rf dist && tsc",
     "test:unit": "ava"
   },
   "keywords": [

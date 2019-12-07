@@ -17,7 +17,7 @@ import {
   mergePackageJson,
   NodeDependencyType,
   NodePackage,
-  normalizePath,
+  parsePath,
   parseJsonAtPath,
   PkgJson,
 } from '@schuchard/schematic-utils';
@@ -59,8 +59,8 @@ async function determineProject(
   }
   // update with project metadata
   options.project = projectName;
-  options.projectRoot = normalizePath(project.root);
-  options.projectSourceRoot = normalizePath(project.sourceRoot || '');
+  options.projectRoot = parsePath(project.root).path;
+  options.projectSourceRoot = parsePath(project.sourceRoot || '').path;
 
   return { project };
 }

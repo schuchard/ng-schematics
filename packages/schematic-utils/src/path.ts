@@ -14,8 +14,3 @@ export function parsePath(path: string): Location {
     filename: basename(nPath),
   };
 }
-
-export function normalizePath(path: string): string {
-  const namePath = normalize(path);
-  return normalize(`${namePath}`);
-}

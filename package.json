@@ -4,8 +4,9 @@
   "description": "Schematic collection",
   "scripts": {
     "bootstrap": "yarn",
-    "lerna": "lerna",
-    "test": "lerna run tsc && lerna run test --stream",
+    "l": "lerna",
+    "build": "lerna run build",
+    "test": "yarn build && lerna run test --stream",
     "test:unit": "lerna run test:unit --stream",
     "clean": "lerna run clean"
   },
