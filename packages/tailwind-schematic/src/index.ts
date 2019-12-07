@@ -1,4 +1,3 @@
-import { JsonObject } from '@angular-devkit/core';
 import { ProjectDefinition } from '@angular-devkit/core/src/workspace';
 import {
   apply,
@@ -12,18 +11,14 @@ import {
 } from '@angular-devkit/schematics';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import {
-  getLatestNodeVersion,
   getWorkspace,
-  mergePackageJson,
+  mergeJsonTree,
   NodeDependencyType,
-  NodePackage,
-  parsePath,
   parseJsonAtPath,
-  PkgJson,
+  parsePath,
+  addPackageJsonDep,
 } from '@schuchard/schematic-utils';
-import { isArray, mergeWith as mergeWithLodash } from 'lodash';
-import { concat, Observable, of } from 'rxjs';
-import { concatMap, map } from 'rxjs/operators';
+import { concat, Observable } from 'rxjs';
 
 const enum Paths {
   WebpackConfig = 'webpack-config.js',
@@ -70,46 +65,13 @@ function updateDependencies(): Rule {
     context.logger.debug('Updating dependencies...');
     context.addTask(new NodePackageInstallTask());
 
-    const addDependencies = of('tailwindcss').pipe(
-      concatMap((packageName: string) => getLatestNodeVersion(packageName)),
-      map((packageFromRegistry: NodePackage) => {
-        const { name, version } = packageFromRegistry;
-        context.logger.debug(`Adding ${name}:${version} to ${NodeDependencyType.Dev}`);
-
-        tree.overwrite(
-          PkgJson.Path,
-          JSON.stringify(
-            mergePackageJson(tree, { [NodeDependencyType.Default]: { [name]: version } }),
-            null,
-            2
-          )
-        );
-        return tree;
-      })
+    return concat(
+      addPackageJsonDep(tree, NodeDependencyType.Default, ['tailwindcss']),
+      addPackageJsonDep(tree, NodeDependencyType.Dev, [
+        '@angular-builders/custom-webpack',
+        '@fullhuman/postcss-purgecss',
+      ])
     );
-
-    const addDevDependencies = of(
-      '@angular-builders/custom-webpack',
-      '@fullhuman/postcss-purgecss'
-    ).pipe(
-      concatMap((packageName: string) => getLatestNodeVersion(packageName)),
-      map((packageFromRegistry: NodePackage) => {
-        const { name, version } = packageFromRegistry;
-        context.logger.debug(`Adding ${name}:${version} to ${NodeDependencyType.Dev}`);
-
-        tree.overwrite(
-          PkgJson.Path,
-          JSON.stringify(
-            mergePackageJson(tree, { [NodeDependencyType.Dev]: { [name]: version } }),
-            null,
-            2
-          )
-        );
-        return tree;
-      })
-    );
-
-    return concat(addDependencies, addDevDependencies);
   };
 }
 
@@ -123,20 +85,21 @@ function updateAngularJson(options: SchematicOptions): Rule {
         path: Paths.WebpackConfig,
       },
     };
+    const builder = '@angular-builders/custom-webpack';
 
     const updates = {
       projects: {
         [project]: {
           architect: {
             build: {
-              builder: '@angular-builders/custom-webpack:browser',
+              builder: `${builder}:browser`,
               options: {
                 ...webpackConfig,
                 styles: [stylesheetPath],
               },
             },
             serve: {
-              builder: '@angular-builders/custom-webpack:dev-server',
+              builder: `${builder}:dev-server`,
               options: {
                 ...webpackConfig,
               },
@@ -146,18 +109,8 @@ function updateAngularJson(options: SchematicOptions): Rule {
       },
     };
 
-    tree.overwrite(
-      './angular.json',
-      JSON.stringify(mergeWithLodash(angularJson, updates, mergeCustomizer), null, 2)
-    );
-    return tree;
+    return mergeJsonTree(tree, './angular.json', angularJson, updates);
   };
-}
-
-function mergeCustomizer(objValue: JsonObject, srcValue: JsonObject) {
-  if (isArray(objValue)) {
-    return objValue.concat(srcValue);
-  }
 }
 
 function addFiles(options: SchematicOptions): Rule {
