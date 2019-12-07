@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "description": "Schematic Utilities",
   "scripts": {
-    "tsc": "rm -rf dist && tsc"
+    "tsc": "rm -rf dist && tsc",
+    "test:unit": "ava"
   },
   "keywords": [
     "schematics",
@@ -22,5 +23,17 @@
     "dist"
   ],
   "main": "./dist/index.js",
-  "typings": "./dist/index.d.ts"
+  "typings": "./dist/index.d.ts",
+  "ava": {
+    "files": [
+      "src/**/*.spec.ts"
+    ],
+    "compileEnhancements": false,
+    "extensions": [
+      "ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ]
+  }
 }

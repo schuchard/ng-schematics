@@ -1,17 +1,17 @@
-import { Path, basename, dirname, join, normalize } from '@angular-devkit/core';
+import { Path, dirname as dirName, normalize, basename, PathFragment } from '@angular-devkit/core';
 
 export interface Location {
-  name: string;
-  path: Path;
+  dirname: string;
+  path: string;
+  filename: PathFragment;
 }
 
-export function parseName(path: string, name: string): Location {
-  const nameWithoutPath = basename(normalize(name));
-  const namePath = dirname(join(normalize(path), name) as Path);
-
+export function parsePath(path: string): Location {
+  const nPath = normalize(path as Path);
   return {
-    name: nameWithoutPath,
-    path: normalize('/' + namePath),
+    dirname: dirName(nPath) as string,
+    path: normalize(nPath) as string,
+    filename: basename(nPath),
   };
 }
 
