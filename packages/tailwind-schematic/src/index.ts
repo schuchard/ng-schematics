@@ -66,10 +66,10 @@ function updateDependencies(): Rule {
     context.addTask(new NodePackageInstallTask());
 
     return concat(
-      addPackageJsonDep(tree, NodeDependencyType.Default, ['tailwindcss']),
+      addPackageJsonDep(tree, NodeDependencyType.Default, [{ name: 'tailwindcss' }]),
       addPackageJsonDep(tree, NodeDependencyType.Dev, [
-        '@angular-builders/custom-webpack',
-        '@fullhuman/postcss-purgecss',
+        { name: '@angular-builders/custom-webpack' },
+        { name: '@fullhuman/postcss-purgecss' },
       ])
     );
   };

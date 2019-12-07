@@ -46,15 +46,20 @@ export function mergeJsonTree(tree: Tree, path: string, jsonA: JsonObject, JsonB
   return tree;
 }
 
+export interface PackageJsonDep {
+  name: string;
+  version?: string;
+}
+
 export function addPackageJsonDep(
   tree: Tree,
   type: NodeDependencyType,
-  deps: string[],
+  deps: PackageJsonDep[],
   path = PkgJson.Path,
   context?: SchematicContext
 ) {
   return of(...deps).pipe(
-    concatMap((packageName: string) => getLatestNodeVersion(packageName)),
+    concatMap((pkg) => (pkg.version ? of(pkg) : getLatestNodeVersion(pkg.name))),
     map((packageFromRegistry: NodePackage) => {
       const { name, version } = packageFromRegistry;
       if (context) {
