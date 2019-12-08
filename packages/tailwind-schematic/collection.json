@@ -2,8 +2,9 @@
   "$schema": "../../node_modules/@angular-devkit/schematics/collection-schema.json",
   "schematics": {
     "ng-add": {
-      "description": "Add SchematicStarter to an application.",
-      "factory": "./dist/index#tailwindSchematic"
+      "description": "Add Tailwind to an application.",
+      "factory": "./dist/index#tailwindSchematic",
+      "schema": "./src/schema.json"
     }
   }
 }

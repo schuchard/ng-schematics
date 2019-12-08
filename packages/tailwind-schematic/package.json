@@ -11,6 +11,7 @@
     "build:clean:launch": "yarn build && yarn clean && yarn launch",
     "launch": "bash ./scripts/launch.sh",
     "test": "yarn build:clean:launch && yarn test:sandbox && yarn clean",
+    "test:unit": "ava",
     "link:sandbox": "yarn link && cd ../../sandbox/test-workspace && yarn link @schuchard/tailwind-schematic",
     "test:sandbox": "cd ../../sandbox/test-workspace && yarn lint && yarn test && yarn build",
     "release": "np"
@@ -31,5 +32,20 @@
   "typings": "dist/index.d.ts",
   "publishConfig": {
     "access": "public"
+  },
+  "ava": {
+    "files": [
+      "src/**/*.spec.ts"
+    ],
+    "compileEnhancements": false,
+    "extensions": [
+      "ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ]
+  },
+  "devDependencies": {
+    "@schematics/angular": "^8.3.20"
   }
 }
