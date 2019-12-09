@@ -36,7 +36,7 @@ interface SchematicOptions {
 export function tailwindSchematic(options: SchematicOptions): Rule {
   return async (tree: Tree, _context: SchematicContext) => {
     const { workspace } = await determineProject(tree, options.project);
-    options = { ...workspace, ...options };
+    options = { ...options, ...workspace };
 
     return chain([updateDependencies(), updateAngularJson(options), addFiles(options)]);
   };

@@ -9,7 +9,8 @@
       "description": "The name of the project.",
       "$default": {
         "$source": "projectName"
-      }
+      },
+      "alias": "p"
     },
     "inlineStyle": {
       "description": "When true, includes styles inline in the component.ts file. Only CSS styles can be included inline. By default, an external styles file is created and referenced in the component.ts file.",

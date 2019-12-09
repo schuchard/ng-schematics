@@ -3,6 +3,7 @@ import test from 'ava';
 import { JsonObject } from '@angular-devkit/core';
 const webpackPath = '/webpack-config.js';
 const tailwindPath = '/tailwind.config.js';
+const angularBuilder = '@angular-builders/custom-webpack';
 
 test("run against the default project if one isn't provided", async (t) => {
   const { files } = await runSchematic();
@@ -30,11 +31,34 @@ test('add package.json devDependencies', async (t) => {
 
   const pkgJson = JSON.parse(tree.readContent('/package.json'));
 
-  t.assert(pkgJson.devDependencies['@angular-builders/custom-webpack']);
+  t.assert(pkgJson.devDependencies[angularBuilder]);
   t.assert(pkgJson.devDependencies['@fullhuman/postcss-purgecss']);
 });
 
-test.todo('should update angular.json with custom-webpack builder config');
+test('should update angular.json with custom-webpack builder config', async (t) => {
+  const tree = await runSchematic();
+
+  const ng = JSON.parse(tree.readContent('/angular.json'));
+
+  t.is(`${angularBuilder}:browser`, ng.projects.bar.architect.build.builder);
+  t.is(`${angularBuilder}:dev-server`, ng.projects.bar.architect.serve.builder);
+  t.deepEqual(
+    {
+      path: webpackPath.slice(1),
+    },
+    ng.projects.bar.architect.build.options.customWebpackConfig
+  );
+  t.deepEqual(
+    {
+      path: webpackPath.slice(1),
+    },
+    ng.projects.bar.architect.serve.options.customWebpackConfig
+  );
+  t.deepEqual(
+    ['projects/bar/src/styles.css', 'projects/bar/src/tailwind.scss'],
+    ng.projects.bar.architect.build.options.styles
+  );
+});
 
 test('add the webpack config to the root', async (t) => {
   const { files } = await runSchematic();
@@ -93,6 +117,7 @@ async function getWorkspaceTree(appName = 'bar') {
     name: 'workspace',
     newProjectRoot: 'projects',
     version: '6.0.0',
+    defaultProject: appName,
   };
 
   const appOptions = {

@@ -48,9 +48,10 @@ export async function determineProject(
   const name: string = projectName || (ws.extensions.defaultProject as string);
   const project = ws.projects.get(name);
 
-  if (project === undefined) {
+  if (!name || project === undefined) {
     throw new Error('No project found in workspace');
   }
+
   // update with project metadata
   const workspace = {
     project: name,
