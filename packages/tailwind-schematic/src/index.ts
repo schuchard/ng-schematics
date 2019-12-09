@@ -17,6 +17,7 @@ import {
   NodeDependencyType,
   parseJsonAtPath,
   parsePath,
+  applyLintFix,
 } from '@schuchard/schematics-core';
 import { concat, Observable } from 'rxjs';
 
@@ -38,7 +39,12 @@ export function tailwindSchematic(options: SchematicOptions): Rule {
     const { workspace } = await determineProject(tree, options.project);
     options = { ...options, ...workspace };
 
-    return chain([updateDependencies(), updateAngularJson(options), addFiles(options)]);
+    return chain([
+      updateDependencies(),
+      updateAngularJson(options),
+      addFiles(options),
+      applyLintFix(),
+    ]);
   };
 }
 

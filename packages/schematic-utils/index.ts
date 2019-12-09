@@ -3,3 +3,4 @@ export * from './src/npm';
 export * from './src/path';
 export * from './src/workspace';
 export * from './src/tree';
+export * from './src/lint-fix';
