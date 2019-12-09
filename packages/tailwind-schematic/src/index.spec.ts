@@ -17,8 +17,22 @@ test('run against a specific project', async (t) => {
   t.assert(files.includes('/bar/src/main.ts'));
 });
 
-test.todo('add package.json dependencies');
-test.todo('add package.json devDependencies');
+test('add package.json dependencies', async (t) => {
+  const tree = await runSchematic();
+
+  const pkgJson = JSON.parse(tree.readContent('/package.json'));
+
+  t.assert(pkgJson.dependencies.tailwindcss);
+});
+
+test('add package.json devDependencies', async (t) => {
+  const tree = await runSchematic();
+
+  const pkgJson = JSON.parse(tree.readContent('/package.json'));
+
+  t.assert(pkgJson.devDependencies['@angular-builders/custom-webpack']);
+  t.assert(pkgJson.devDependencies['@fullhuman/postcss-purgecss']);
+});
 
 test.todo('should update angular.json with custom-webpack builder config');
 
@@ -66,7 +80,11 @@ test("don't add the tailwind config if it already exists", async (t) => {
   t.assert(tree.files.includes(webpackPath));
 });
 
-test.todo('add project specific tailwind.scss file');
+test('add project specific tailwind.scss file', async (t) => {
+  const { files } = await runSchematic();
+
+  t.assert(files.includes('/projects/bar/src/tailwind.scss'));
+});
 
 async function getWorkspaceTree(appName = 'bar') {
   const ngRunner = new SchematicTestRunner('@schematics/angular', '');
