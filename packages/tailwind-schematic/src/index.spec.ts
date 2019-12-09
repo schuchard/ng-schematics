@@ -36,22 +36,35 @@ test('add the tailwind config to the root', async (t) => {
 
 test("don't add the webpack config if it already exists", async (t) => {
   const webpackAssert = 'webpack config';
-  const tailwindAssert = 'tailwind css';
   let tree = await getWorkspaceTree();
 
   tree.create(webpackPath, webpackAssert);
-  tree.create(tailwindPath, tailwindAssert);
 
   const schematicTree = await runSchematic({}, 'ng-add', tree);
 
   t.is(webpackAssert, schematicTree.readContent(webpackPath));
   t.assert(tree.files.includes(webpackPath));
 
-  t.is(tailwindAssert, schematicTree.readContent(tailwindPath));
+  // assert the actual file contents are present
+  t.assert(schematicTree.readContent(tailwindPath).startsWith('module.exports'));
   t.assert(tree.files.includes(tailwindPath));
 });
 
-test.todo("don't add the tailwind config if it already exists");
+test("don't add the tailwind config if it already exists", async (t) => {
+  const tailwindAssert = 'tailwind css';
+  let tree = await getWorkspaceTree();
+
+  tree.create(tailwindPath, tailwindAssert);
+
+  const schematicTree = await runSchematic({}, 'ng-add', tree);
+
+  t.is(tailwindAssert, schematicTree.readContent(tailwindPath));
+  t.assert(tree.files.includes(tailwindPath));
+
+  // assert the actual file contents are present
+  t.assert(schematicTree.readContent(webpackPath).startsWith('const purgecss'));
+  t.assert(tree.files.includes(webpackPath));
+});
 
 test.todo('add project specific tailwind.scss file');
 
