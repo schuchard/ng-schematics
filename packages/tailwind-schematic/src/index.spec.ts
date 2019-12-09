@@ -1,10 +1,8 @@
-import { SchematicTestRunner } from '@angular-devkit/schematics/testing';
+import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
 import test from 'ava';
-
-const schematicRunner = new SchematicTestRunner(
-  '@schuchard/tailwind-schematic',
-  require.resolve('../collection.json')
-);
+import { JsonObject } from '@angular-devkit/core';
+const webpackPath = '/webpack-config.js';
+const tailwindPath = '/tailwind.config.js';
 
 test("run against the default project if one isn't provided", async (t) => {
   const { files } = await runSchematic();
@@ -27,16 +25,32 @@ test.todo('should update angular.json with custom-webpack builder config');
 test('add the webpack config to the root', async (t) => {
   const { files } = await runSchematic();
 
-  t.assert(files.includes('/tailwind.config.js'));
+  t.assert(files.includes(tailwindPath));
 });
 
 test('add the tailwind config to the root', async (t) => {
   const { files } = await runSchematic();
 
-  t.assert(files.includes('/webpack-config.js'));
+  t.assert(files.includes(webpackPath));
 });
 
-test.todo("don't add the webpack config if it already exists");
+test("don't add the webpack config if it already exists", async (t) => {
+  const webpackAssert = 'webpack config';
+  const tailwindAssert = 'tailwind css';
+  let tree = await getWorkspaceTree();
+
+  tree.create(webpackPath, webpackAssert);
+  tree.create(tailwindPath, tailwindAssert);
+
+  const schematicTree = await runSchematic({}, 'ng-add', tree);
+
+  t.is(webpackAssert, schematicTree.readContent(webpackPath));
+  t.assert(tree.files.includes(webpackPath));
+
+  t.is(tailwindAssert, schematicTree.readContent(tailwindPath));
+  t.assert(tree.files.includes(tailwindPath));
+});
+
 test.todo("don't add the tailwind config if it already exists");
 
 test.todo('add project specific tailwind.scss file');
@@ -75,8 +89,13 @@ async function getApplicationTree() {
   return await schematicRunner.runSchematicAsync('ng-new', defaultOptions).toPromise();
 }
 
-async function runSchematic(options = {}, command = 'ng-add') {
+async function runSchematic(options: JsonObject = {}, command = 'ng-add', tree?: UnitTestTree) {
+  const schematicRunner = new SchematicTestRunner(
+    '@schuchard/tailwind-schematic',
+    require.resolve('../collection.json')
+  );
+
   return await schematicRunner
-    .runSchematicAsync(command, options, await getWorkspaceTree())
+    .runSchematicAsync(command, options, tree || (await getWorkspaceTree()))
     .toPromise();
 }
