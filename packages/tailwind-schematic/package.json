@@ -23,7 +23,7 @@
   "license": "MIT",
   "schematics": "./collection.json",
   "dependencies": {
-    "@schuchard/schematic-utils": "^0.1.0"
+    "@schuchard/schematics-core": "^0.1.0"
   },
   "files": [
     "dist"

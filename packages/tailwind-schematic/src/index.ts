@@ -17,7 +17,7 @@ import {
   NodeDependencyType,
   parseJsonAtPath,
   parsePath,
-} from '@schuchard/schematic-utils';
+} from '@schuchard/schematics-core';
 import { concat, Observable } from 'rxjs';
 
 const enum Paths {

@@ -1,5 +1,5 @@
 {
-  "name": "@schuchard/schematic-utils",
+  "name": "@schuchard/schematics-core",
   "version": "0.1.0",
   "description": "Schematic Utilities",
   "scripts": {
