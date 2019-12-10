@@ -5,6 +5,12 @@
       "description": "Add Tailwind to an application.",
       "factory": "./dist/index#tailwindSchematic",
       "schema": "./src/schema.json"
+    },
+    "__test": {
+      "description": "Development test for Tailwind Schematic",
+      "factory": "./dist/e2e",
+      "schema": "./src/schema.json",
+      "private": true
     }
   }
 }
