@@ -17,17 +17,16 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-  testUnit:
+  test-unit:
     docker:
       - image: 'circleci/node:10.16.1-browsers'
     steps:
-      - run
       - run: yarn test:ci
 workflows:
   version: 2.1
   build-test:
     jobs:
       - build
-      - testUnit:
+      - test-unit:
           requires:
             - build
