@@ -6,8 +6,8 @@ rm -rf dist
 echo "compiling typescript"
 tsc -p tsconfig.json
 
-# echo "copying collection.json to dist"
-# cp collection.json dist
+echo "copying collection.json to dist"
+cp collection.json dist
 
 echo "copying schema.json to dist"
 cp src/schema.json dist
