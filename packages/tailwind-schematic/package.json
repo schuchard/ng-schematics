@@ -32,6 +32,11 @@
   "devDependencies": {
     "@schematics/angular": "^8.3.20"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/schuchard/ng-tools/tree/master/packages/tailwind-schematic",
+    "directory": "packages/tailwind-schematic"
+  },
   "files": [
     "dist",
     "collection.json"
