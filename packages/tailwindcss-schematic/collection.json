@@ -6,6 +6,11 @@
       "factory": "./dist/index#tailwindSchematic",
       "schema": "./dist/schema.json"
     },
+    "demo": {
+      "description": "Add Tailwind demo markup.",
+      "factory": "./dist/demo",
+      "schema": "./dist/schema.json"
+    },
     "__test": {
       "description": "Development test for Tailwind Schematic",
       "factory": "./dist/e2e",
