@@ -2,6 +2,12 @@
 
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 
-## Sandbox testing
+| Packages                         |                                                 |
+| -------------------------------- | ----------------------------------------------- |
+| [tailwindcss-schematic][tcss]    | Add TailwindCss to Angular workspace            |
+| [@schuchard/schematics-core][sc] | Collection of utilities for building Schematics |
 
-More info on this sandbox approach is detailed in this blog post [kevinschuchard.com/blog/2018-11-20-schematic-sandbox/](https://www.kevinschuchard.com/blog/2018-11-20-schematic-sandbox/)
+📚Additional docs availabe on the [wiki](https://github.com/schuchard/ng-tools/wiki)
+
+[tcss]: packages/tailwindcss-schematic/README.md
+[sc]: packages/schematics-core/README.md
