@@ -1,6 +1,6 @@
 {
   "name": "tailwind-schematic",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Add tailwind to an Angular project",
   "scripts": {
     "clean:launch": "yarn clean && yarn launch",
@@ -26,7 +26,7 @@
   "dependencies": {
     "@angular-devkit/core": "8.3.20",
     "@angular-devkit/schematics": "8.3.20",
-    "@schuchard/schematics-core": "^0.1.1",
+    "@schuchard/schematics-core": "^0.1.2",
     "rxjs": "6.4.0",
     "typescript": "~3.7.2"
   },
