@@ -1,39 +1,35 @@
 {
   "name": "@schuchard/ng-tools",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Schematic collection",
+  "private": true,
   "scripts": {
-    "bootstrap": "yarn",
+    "bootstrap": "yarn && lerna bootstrap",
     "l": "lerna",
     "build": "lerna run build",
     "test": "yarn build && lerna run test --stream",
     "test:unit": "lerna run test:unit --stream",
-    "clean": "lerna run clean"
+    "clean": "lerna run clean",
+    "publish": "lerna publish"
   },
   "keywords": [
     "schematics"
   ],
-  "private": true,
   "workspaces": [
     "packages/*"
   ],
   "license": "MIT",
-  "dependencies": {
-    "@angular-devkit/core": "8.3.20",
-    "@angular-devkit/schematics": "8.3.20",
-    "@types/jasmine": "^3.5.0",
-    "@types/node": "^12.12.14",
-    "jasmine": "^3.5.0",
-    "rxjs": "6.4.0",
-    "typescript": "~3.7.2"
-  },
   "devDependencies": {
     "ava": "2.4.0",
     "husky": "3.1.0",
     "lerna": "^3.19.0",
     "lint-staged": "9.5.0",
     "prettier": "~1.19.1",
-    "ts-node": "8.5.4"
+    "ts-node": "8.5.4",
+    "jasmine": "^3.5.0",
+    "@types/jasmine": "^3.5.0",
+    "@types/node": "^12.12.14",
+    "@types/lodash": "4.14.149"
   },
   "husky": {
     "hooks": {

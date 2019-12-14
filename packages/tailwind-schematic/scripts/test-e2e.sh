@@ -9,4 +9,4 @@ cd ../../sandbox/test-workspace &&
 
 yarn &&
 
-./node_modules/.bin/ng g @schuchard/tailwind-schematic:__test
+./node_modules/.bin/ng g tailwind-schematic:__test
