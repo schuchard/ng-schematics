@@ -1,5 +1,5 @@
 {
-  "name": "@schuchard/tailwind-schematic",
+  "name": "tailwind-schematic",
   "version": "0.1.0",
   "description": "Add tailwind to an Angular project",
   "scripts": {
@@ -13,7 +13,7 @@
     "test": "yarn build:clean:launch && yarn test:sandbox && yarn clean",
     "test:unit": "ava",
     "test:e2e": "bash ./scripts/test-e2e.sh",
-    "link:sandbox": "yarn link && cd ../../sandbox/test-workspace && yarn link @schuchard/tailwind-schematic",
+    "link:sandbox": "yarn link && cd ../../sandbox/test-workspace && yarn link tailwind-schematic",
     "test:sandbox": "cd ../../sandbox/test-workspace && yarn lint && yarn test && yarn build",
     "release": "np"
   },
@@ -29,6 +29,9 @@
     "@angular-devkit/schematics": "8.3.20",
     "rxjs": "6.4.0",
     "typescript": "~3.7.2"
+  },
+  "devDependencies": {
+    "@schematics/angular": "^8.3.20"
   },
   "files": [
     "dist"
@@ -49,8 +52,5 @@
     "require": [
       "ts-node/register"
     ]
-  },
-  "devDependencies": {
-    "@schematics/angular": "^8.3.20"
   }
 }

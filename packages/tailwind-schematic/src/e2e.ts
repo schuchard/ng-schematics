@@ -6,7 +6,7 @@ export default function index(): Rule {
     const { workspace } = await determineProject(tree);
 
     return chain([
-      externalSchematic('@schuchard/tailwind-schematic', 'ng-add', {}),
+      externalSchematic('tailwind-schematic', 'ng-add', {}),
       addTailwindMarkup(workspace.projectSourceRoot),
     ]);
   };
