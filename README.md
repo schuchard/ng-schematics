@@ -9,5 +9,5 @@
 
 📚Additional docs availabe on the [wiki](https://github.com/schuchard/ng-tools/wiki)
 
-[tcss]: packages/tailwindcss-schematic/README.md
-[sc]: packages/schematics-core/README.md
+[tcss]: packages/tailwindcss-schematic
+[sc]: packages/schematics-core
