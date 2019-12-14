@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "Schematic collection",
   "scripts": {
-    "bootstrap": "yarn && lerna bootstrap",
+    "bootstrap": "yarn && lerna bootstrap && yarn build",
     "l": "lerna",
     "build": "lerna run build",
     "test": "yarn build && lerna run test --stream",
