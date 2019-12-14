@@ -22,7 +22,7 @@ jobs:
       - image: 'circleci/node:10.16.1-browsers'
     steps:
       - checkout
-      - run: yarn test:ci
+      - run: yarn test:unit
 workflows:
   version: 2.1
   build-test:
