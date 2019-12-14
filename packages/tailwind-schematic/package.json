@@ -1,6 +1,6 @@
 {
   "name": "tailwind-schematic",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Add tailwind to an Angular project",
   "scripts": {
     "clean:launch": "yarn clean && yarn launch",
