@@ -21,6 +21,7 @@ jobs:
     docker:
       - image: 'circleci/node:10.16.1-browsers'
     steps:
+      - checkout
       - run: yarn test:ci
 workflows:
   version: 2.1
