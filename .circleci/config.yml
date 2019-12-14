@@ -23,4 +23,11 @@ jobs:
     steps:
       - execute
       - run: yarn test:ci
-
+workflows:
+  version: 2
+  build-test:
+    jobs:
+      - build
+      - test-unit:
+          requires:
+            - build
