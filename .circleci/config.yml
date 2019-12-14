@@ -24,7 +24,7 @@ jobs:
       - execute
       - run: yarn test:ci
 workflows:
-  version: 2
+  version: 2.1
   build-test:
     jobs:
       - build
