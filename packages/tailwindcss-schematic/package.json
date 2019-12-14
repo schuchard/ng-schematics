@@ -1,7 +1,7 @@
 {
-  "name": "tailwind-schematic",
+  "name": "tailwindcss-schematic",
   "version": "0.1.5",
-  "description": "Add tailwind to an Angular project",
+  "description": "Add TailwindCSS to an Angular project",
   "scripts": {
     "clean:launch": "yarn clean && yarn launch",
     "dev": "yarn build:clean:launch",
@@ -13,7 +13,7 @@
     "test": "yarn build:clean:launch && yarn test:sandbox && yarn clean",
     "test:unit": "ava",
     "test:e2e": "bash ./scripts/test-e2e.sh",
-    "link:sandbox": "yarn link && cd ../../sandbox/test-workspace && yarn link tailwind-schematic",
+    "link:sandbox": "yarn link && cd ../../sandbox/test-workspace && yarn link tailwindcss-schematic",
     "test:sandbox": "cd ../../sandbox/test-workspace && yarn lint && yarn test && yarn build",
     "release": "np"
   },
@@ -34,8 +34,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/schuchard/ng-tools/tree/master/packages/tailwind-schematic",
-    "directory": "packages/tailwind-schematic"
+    "url": "https://github.com/schuchard/ng-tools/tree/master/packages/tailwindcss-schematic",
+    "directory": "packages/tailwindcss-schematic"
   },
   "files": [
     "dist",

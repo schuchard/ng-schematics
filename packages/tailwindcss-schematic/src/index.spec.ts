@@ -147,7 +147,7 @@ async function getApplicationTree() {
 
 async function runSchematic(options: JsonObject = {}, command = 'ng-add', tree?: UnitTestTree) {
   const schematicRunner = new SchematicTestRunner(
-    'tailwind-schematic',
+    'tailwindcss-schematic',
     require.resolve('../collection.json')
   );
 

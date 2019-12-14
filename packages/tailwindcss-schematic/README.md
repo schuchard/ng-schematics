@@ -3,5 +3,5 @@
 ## Getting Started
 
 ```bash
-ng add tailwind-schematic
+ng add tailwindcss-schematic
 ```

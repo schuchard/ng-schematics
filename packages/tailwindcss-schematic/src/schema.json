@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "id": "ng-tools-tailwind-schematic",
+  "id": "tailwindcss-schematic",
   "title": "Angular Tailwind Options Schema",
   "type": "object",
   "properties": {
