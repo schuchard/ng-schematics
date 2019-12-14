@@ -1,6 +1,6 @@
 {
   "name": "tailwind-schematic",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Add tailwind to an Angular project",
   "scripts": {
     "clean:launch": "yarn clean && yarn launch",
@@ -33,7 +33,8 @@
     "@schematics/angular": "^8.3.20"
   },
   "files": [
-    "dist"
+    "dist",
+    "collection.json"
   ],
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",

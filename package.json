@@ -10,7 +10,7 @@
     "test": "yarn build && lerna run test --stream",
     "test:unit": "lerna run test:unit --stream",
     "clean": "lerna run clean",
-    "publish": "lerna publish"
+    "publish": "yarn build && lerna publish"
   },
   "keywords": [
     "schematics"
