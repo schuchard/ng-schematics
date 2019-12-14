@@ -2,8 +2,8 @@ import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/te
 import test from 'ava';
 import { JsonObject } from '@angular-devkit/core';
 import { Paths } from './index';
-const webpackPath = `/${Paths.WebpackConfig}`;
-const tailwindPath = '/tailwind.config.js';
+const webpackConfigPath = `/${Paths.WebpackConfig}`;
+const tailwindConfigPath = `/${Paths.TailwindConfig}`;
 const angularBuilder = '@angular-builders/custom-webpack';
 
 test("run against the default project if one isn't provided", async (t) => {
@@ -45,13 +45,13 @@ test('should update angular.json with custom-webpack builder config', async (t) 
   t.is(`${angularBuilder}:dev-server`, ng.projects.bar.architect.serve.builder);
   t.deepEqual(
     {
-      path: webpackPath.slice(1),
+      path: webpackConfigPath.slice(1),
     },
     ng.projects.bar.architect.build.options.customWebpackConfig
   );
   t.deepEqual(
     {
-      path: webpackPath.slice(1),
+      path: webpackConfigPath.slice(1),
     },
     ng.projects.bar.architect.serve.options.customWebpackConfig
   );
@@ -64,46 +64,62 @@ test('should update angular.json with custom-webpack builder config', async (t) 
 test('add the webpack config to the root', async (t) => {
   const { files } = await runSchematic();
 
-  t.assert(files.includes(tailwindPath));
+  t.assert(files.includes(tailwindConfigPath));
 });
 
 test('add the tailwind config to the root', async (t) => {
   const { files } = await runSchematic();
 
-  t.assert(files.includes(webpackPath));
+  t.assert(files.includes(webpackConfigPath));
 });
 
-test("don't add the webpack config if it already exists", async (t) => {
-  const webpackAssert = 'webpack config';
+test("don't add the webpack.config if it already exists", async (t) => {
+  const webpackAssert = 'webpack config content';
   let tree = await getWorkspaceTree();
 
-  tree.create(webpackPath, webpackAssert);
+  tree.create(webpackConfigPath, webpackAssert);
 
   const schematicTree = await runSchematic({}, 'ng-add', tree);
 
-  t.is(webpackAssert, schematicTree.readContent(webpackPath));
-  t.assert(tree.files.includes(webpackPath));
+  t.is(webpackAssert, schematicTree.readContent(webpackConfigPath));
+  t.assert(tree.files.includes(webpackConfigPath));
 
   // assert the actual file contents are present
-  t.assert(schematicTree.readContent(tailwindPath).startsWith('module.exports'));
-  t.assert(tree.files.includes(tailwindPath));
+  t.assert(schematicTree.readContent(tailwindConfigPath).startsWith('module.exports'));
+  t.assert(tree.files.includes(tailwindConfigPath));
 });
 
-test("don't add the tailwind config if it already exists", async (t) => {
-  const tailwindAssert = 'tailwind css';
+test("don't add the tailwind.config if it already exists", async (t) => {
+  const tailwindAssert = 'tailwind css content';
   let tree = await getWorkspaceTree();
 
-  tree.create(tailwindPath, tailwindAssert);
+  tree.create(tailwindConfigPath, tailwindAssert);
 
   const schematicTree = await runSchematic({}, 'ng-add', tree);
 
-  t.is(tailwindAssert, schematicTree.readContent(tailwindPath));
-  t.assert(tree.files.includes(tailwindPath));
+  t.is(tailwindAssert, schematicTree.readContent(tailwindConfigPath));
+  t.assert(tree.files.includes(tailwindConfigPath));
 
   // assert the actual file contents are present
-  t.assert(schematicTree.readContent(webpackPath).startsWith('const purgecss'));
-  t.assert(tree.files.includes(webpackPath));
+  t.assert(schematicTree.readContent(webpackConfigPath).startsWith('const purgecss'));
+  t.assert(tree.files.includes(webpackConfigPath));
 });
+
+// test("don't add the tailwind.scss if it already exists", async t => {
+//   const tailwindAssert = 'tailwind.scss content';
+//   let tree = await getWorkspaceTree();
+
+//   tree.create(tailwindConfigPath, tailwindAssert);
+
+//   const schematicTree = await runSchematic({}, 'ng-add', tree);
+
+//   t.is(tailwindAssert, schematicTree.readContent(tailwindConfigPath));
+//   t.assert(tree.files.includes(tailwindConfigPath));
+
+//   // assert the actual file contents are present
+//   t.assert(schematicTree.readContent(webpackConfigPath).startsWith('const purgecss'));
+//   t.assert(tree.files.includes(webpackConfigPath));
+// })
 
 test('add project specific tailwind.scss file', async (t) => {
   const { files } = await runSchematic();
