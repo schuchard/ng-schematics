@@ -21,8 +21,8 @@ import {
 } from '@schuchard/schematics-core';
 import { concat, Observable } from 'rxjs';
 
-const enum Paths {
-  WebpackConfig = 'webpack-config.js',
+export const enum Paths {
+  WebpackConfig = 'webpack.config.js',
   TailwindConfig = 'tailwind.config.js',
 }
 

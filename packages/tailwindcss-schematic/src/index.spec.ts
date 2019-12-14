@@ -1,7 +1,8 @@
 import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
 import test from 'ava';
 import { JsonObject } from '@angular-devkit/core';
-const webpackPath = '/webpack-config.js';
+import { Paths } from './index';
+const webpackPath = `/${Paths.WebpackConfig}`;
 const tailwindPath = '/tailwind.config.js';
 const angularBuilder = '@angular-builders/custom-webpack';
 
