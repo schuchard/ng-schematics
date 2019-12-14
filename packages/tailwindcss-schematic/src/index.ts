@@ -31,7 +31,6 @@ interface SchematicOptions {
   webpackConfigPath: string;
   projectRoot: string;
   projectSourceRoot: string;
-  inlineStyles: boolean;
 }
 
 export function tailwindSchematic(options: SchematicOptions): Rule {

@@ -122,7 +122,6 @@ async function getWorkspaceTree(appName = 'bar') {
 
   const appOptions = {
     name: appName,
-    inlineStyle: false,
     inlineTemplate: false,
     routing: false,
     skipTests: false,
