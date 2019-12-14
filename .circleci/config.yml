@@ -17,5 +17,10 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      # run tests!
+  test-unit:
+    docker:
+      - image: 'circleci/node:10.16.1-browsers'
+    steps:
+      - execute
       - run: yarn test:ci
+
