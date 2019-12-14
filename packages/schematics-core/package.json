@@ -35,5 +35,8 @@
     "require": [
       "ts-node/register"
     ]
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
