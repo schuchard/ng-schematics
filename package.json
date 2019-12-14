@@ -8,6 +8,7 @@
     "build": "lerna run build",
     "test": "yarn build && lerna run test --stream",
     "test:unit": "lerna run test:unit --stream",
+    "test:ci": "lerna run test:ci --stream",
     "clean": "lerna run clean"
   },
   "keywords": [

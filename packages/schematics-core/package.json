@@ -4,7 +4,7 @@
   "description": "Schematic Utilities",
   "scripts": {
     "build": "rm -rf dist && tsc",
-    "test:unit": "ava"
+    "test:ci": "ava"
   },
   "keywords": [
     "schematics",
