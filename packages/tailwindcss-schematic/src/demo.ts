@@ -1,14 +1,11 @@
-import { chain, externalSchematic, Rule, SchematicContext, Tree } from '@angular-devkit/schematics';
+import { chain, Rule, SchematicContext, Tree } from '@angular-devkit/schematics';
 import { determineProject } from '@schuchard/schematics-core';
 
 export default function index(): Rule {
   return async (tree: Tree, _context: SchematicContext) => {
     const { workspace } = await determineProject(tree);
 
-    return chain([
-      externalSchematic('tailwindcss-schematic', 'ng-add', {}),
-      addTailwindMarkup(workspace.projectSourceRoot),
-    ]);
+    return chain([addTailwindMarkup(workspace.projectSourceRoot)]);
   };
 }
 
