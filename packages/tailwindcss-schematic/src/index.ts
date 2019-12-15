@@ -102,18 +102,18 @@ function updateAngularJson(options: SchematicOptions): Rule {
 }
 
 function addFiles(options: SchematicOptions): Rule {
-  return (tree: Tree) => {
+  return (tree: Tree, context: SchematicContext) => {
     return chain([
       mergeWith(
         apply(url('./files/root'), [
-          filterExistingPath(tree, Paths.WebpackConfig),
-          filterExistingPath(tree, Paths.TailwindConfig),
+          filterExistingPath(tree, Paths.WebpackConfig, context),
+          filterExistingPath(tree, Paths.TailwindConfig, context),
           move('./'),
         ])
       ),
       mergeWith(
         apply(url('./files/project'), [
-          filterExistingPath(tree, `${options.projectSourceRoot}/${Paths.TailwindStyles}`),
+          filterExistingPath(tree, `${options.projectSourceRoot}/${Paths.TailwindStyles}`, context),
           move(options.projectSourceRoot),
         ])
       ),

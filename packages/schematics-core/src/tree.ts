@@ -1,11 +1,20 @@
-import { Tree, filter, noop, Rule } from '@angular-devkit/schematics';
+import { Tree, filter, noop, Rule, SchematicContext } from '@angular-devkit/schematics';
 import { basename } from 'path';
 
 /**
  * Don't add file at `path` if it already exists
  */
-export function filterExistingPath(tree: Tree, path: string): Rule {
+export function filterExistingPath(tree: Tree, path: string, context?: SchematicContext): Rule {
   return tree.exists(path)
-    ? filter((schematicPath) => !schematicPath.endsWith(basename(path)))
+    ? filter((schematicPath) => {
+        const filename = basename(path);
+        const fileExists = schematicPath.endsWith(filename);
+
+        if (fileExists && context) {
+          context.logger.warn(`Not adding ${filename}. File exists at ${path}`);
+        }
+
+        return !fileExists;
+      })
     : noop();
 }
