@@ -4,12 +4,12 @@ import { JsonObject } from '@angular-devkit/core';
 import { Paths } from './index';
 const webpackConfigPath = `/${Paths.WebpackConfig}`;
 const tailwindConfigPath = `/${Paths.TailwindConfig}`;
+const tailwindStylesPath = `/${Paths.TailwindStyles}`;
 const angularBuilder = '@angular-builders/custom-webpack';
 
 test("run against the default project if one isn't provided", async (t) => {
   const { files } = await runSchematic();
 
-  // console.log('workspace ->', JSON.stringify(files, null, 2));
   t.assert(files.includes('/projects/bar/src/main.ts'));
 });
 
@@ -105,21 +105,18 @@ test("don't add the tailwind.config if it already exists", async (t) => {
   t.assert(tree.files.includes(webpackConfigPath));
 });
 
-// test("don't add the tailwind.scss if it already exists", async t => {
-//   const tailwindAssert = 'tailwind.scss content';
-//   let tree = await getWorkspaceTree();
+test("don't add the tailwind.scss if it already exists", async (t) => {
+  const tailwindAssert = 'tailwind.scss content';
+  const workspaceTailwindStylePath = `/projects/bar/src${tailwindStylesPath}`;
+  let tree = await getWorkspaceTree();
 
-//   tree.create(tailwindConfigPath, tailwindAssert);
+  tree.create(workspaceTailwindStylePath, tailwindAssert);
 
-//   const schematicTree = await runSchematic({}, 'ng-add', tree);
+  const schematicTree = await runSchematic({}, 'ng-add', tree);
 
-//   t.is(tailwindAssert, schematicTree.readContent(tailwindConfigPath));
-//   t.assert(tree.files.includes(tailwindConfigPath));
-
-//   // assert the actual file contents are present
-//   t.assert(schematicTree.readContent(webpackConfigPath).startsWith('const purgecss'));
-//   t.assert(tree.files.includes(webpackConfigPath));
-// })
+  t.is(tailwindAssert, schematicTree.readContent(workspaceTailwindStylePath));
+  t.assert(tree.files.includes(workspaceTailwindStylePath));
+});
 
 test('add project specific tailwind.scss file', async (t) => {
   const { files } = await runSchematic();

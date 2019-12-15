@@ -24,6 +24,7 @@ import { concat, Observable } from 'rxjs';
 export const enum Paths {
   WebpackConfig = 'webpack.config.js',
   TailwindConfig = 'tailwind.config.js',
+  TailwindStyles = 'tailwind.scss',
 }
 
 interface SchematicOptions {
@@ -66,7 +67,7 @@ function updateAngularJson(options: SchematicOptions): Rule {
   return (tree: Tree, _context: SchematicContext) => {
     const angularJson = parseJsonAtPath(tree, './angular.json') as any;
     const { project, projectSourceRoot } = options;
-    const stylesheetPath = parsePath(`${projectSourceRoot}/tailwind.scss`).path;
+    const stylesheetPath = parsePath(`${projectSourceRoot}/${Paths.TailwindStyles}`).path;
     const webpackConfig = {
       customWebpackConfig: {
         path: Paths.WebpackConfig,
@@ -110,7 +111,12 @@ function addFiles(options: SchematicOptions): Rule {
           move('./'),
         ])
       ),
-      mergeWith(apply(url('./files/project'), [move(options.projectSourceRoot)])),
+      mergeWith(
+        apply(url('./files/project'), [
+          filterExistingPath(tree, `${options.projectSourceRoot}/${Paths.TailwindStyles}`),
+          move(options.projectSourceRoot),
+        ])
+      ),
     ]);
   };
 }
