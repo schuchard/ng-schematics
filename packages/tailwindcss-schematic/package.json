@@ -18,7 +18,10 @@
     "release": "np"
   },
   "keywords": [
-    "schematics"
+    "schematics",
+    "tailwind",
+    "tailwindcss",
+    "angular"
   ],
   "author": "Kevin Schuchard",
   "license": "MIT",
