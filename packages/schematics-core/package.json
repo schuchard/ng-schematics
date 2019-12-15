@@ -1,6 +1,6 @@
 {
   "name": "@schuchard/schematics-core",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "Schematic Utilities",
   "scripts": {
     "build": "rm -rf dist && tsc",
