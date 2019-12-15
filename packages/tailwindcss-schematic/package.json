@@ -14,8 +14,7 @@
     "test:unit": "ava",
     "test:e2e": "bash ./scripts/test-e2e.sh",
     "link:sandbox": "yarn link && cd ../../sandbox/test-workspace && yarn link tailwindcss-schematic",
-    "test:sandbox": "cd ../../sandbox/test-workspace && yarn lint && yarn test && yarn build",
-    "release": "np"
+    "test:sandbox": "cd ../../sandbox/test-workspace && yarn lint && yarn test && yarn build"
   },
   "keywords": [
     "schematics",
