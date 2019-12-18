@@ -11,6 +11,7 @@ tsc -p tsconfig.json
 
 echo "copying schema.json to dist"
 cp src/schema.json dist
+cp src/schema-demo.json dist
 
 echo "copying ./files to dist"
 cp -r src/files dist

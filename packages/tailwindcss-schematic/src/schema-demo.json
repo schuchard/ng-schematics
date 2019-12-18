@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "id": "tailwindcss-schematic-demo",
+  "title": "Angular Tailwind Demo Options Schema",
+  "type": "object",
+  "properties": {
+    "path": {
+      "type": "string",
+      "description": "Path of the HTML file to add demo markup to.",
+      "default": "app.component.html",
+      "alias": "p",
+      "x-prompt": "Path to add demo markup to HTML from project root"
+    }
+  },
+  "required": []
+}

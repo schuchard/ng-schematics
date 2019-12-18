@@ -9,7 +9,7 @@
     "demo": {
       "description": "Add Tailwind demo markup.",
       "factory": "./dist/demo",
-      "schema": "./dist/schema.json"
+      "schema": "./dist/schema-demo.json"
     },
     "__test": {
       "description": "Development test for Tailwind Schematic",

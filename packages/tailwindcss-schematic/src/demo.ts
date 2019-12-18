@@ -1,17 +1,25 @@
 import { chain, Rule, SchematicContext, Tree } from '@angular-devkit/schematics';
 import { determineProject } from '@schuchard/schematics-core';
 
-export default function index(): Rule {
+interface SchematicOptions {
+  path?: string;
+}
+
+export default function index(options: SchematicOptions): Rule {
   return async (tree: Tree, _context: SchematicContext) => {
     const { workspace } = await determineProject(tree);
 
-    return chain([addTailwindMarkup(workspace.projectSourceRoot)]);
+    return chain([addTailwindMarkup(workspace.projectSourceRoot, options)]);
   };
 }
 
-function addTailwindMarkup(srcRoot: string): Rule {
+function addTailwindMarkup(srcRoot: string, options: SchematicOptions): Rule {
   return (tree: Tree) => {
-    tree.overwrite(`${srcRoot}/app/app.component.html`, tailwindMarkup());
+    const path =
+      !options.path || options.path === 'app.component.html'
+        ? `${srcRoot}/app/app.component.html`
+        : options.path;
+    tree.overwrite(path, tailwindMarkup());
     return tree;
   };
 }
