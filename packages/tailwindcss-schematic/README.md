@@ -1,5 +1,7 @@
 # Angular Tailwind CSS Schematic
 
+A schematic that makes it easy to use Tailwind CSS with Angular projects. Tailwind CSS provides low-level utility classes that let you build completely custom designs without ever leaving your HTML.
+
 [![npm](https://img.shields.io/npm/v/tailwindcss-schematic.svg)](https://www.npmjs.com/package/tailwindcss-schematic)
 
 🌎[Live Demo](https://ng-tailwind.netlify.com)
