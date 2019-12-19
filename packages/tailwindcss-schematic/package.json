@@ -1,6 +1,6 @@
 {
   "name": "tailwindcss-schematic",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Add TailwindCSS to an Angular project",
   "scripts": {
     "clean:launch": "yarn clean && yarn launch",
