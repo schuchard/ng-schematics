@@ -2,11 +2,19 @@ import { Tree, SchematicsException, SchematicContext } from '@angular-devkit/sch
 import { parseJsonAst, JsonParseMode, JsonObject } from '@angular-devkit/core';
 import { PkgJson, NodeDependencyType, getLatestNodeVersion, NodePackage } from './npm';
 import { isArray, mergeWith } from 'lodash';
-import { of } from 'rxjs';
+import { of, Observable } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
 
-export function mergePackageJson(tree: Tree, mergeObject: JsonObject, path = PkgJson.Path): Tree {
-  return mergeJsonTree(tree, path, parseJsonAtPath(tree, path), mergeObject);
+export interface PackageJsonDep {
+  name: string;
+  version?: string;
+}
+
+/**
+ * Serialize JSON.
+ */
+export function serializeJson(json: any): string {
+  return `${JSON.stringify(json, null, 2)}\n`;
 }
 
 export function parseJsonAtPath(tree: Tree, path: string): JsonObject {
@@ -27,18 +35,32 @@ export function parseJsonAtPath(tree: Tree, path: string): JsonObject {
   return json.value;
 }
 
-export function mergeJson(jsonA: JsonObject, JsonB: JsonObject) {
+/**
+ * Combine two JSON objects.
+ * Recursively merges own and inherited enumerable string keyed properties of source objects into the destination object.
+ */
+export function mergeJson(jsonA: JsonObject, JsonB: JsonObject): JsonObject {
   return mergeWith(jsonA, JsonB, mergeCustomizer);
 }
 
-export function mergeCustomizer(objValue: JsonObject, srcValue: JsonObject) {
+/**
+ * Handle Arrays by concatenating source values to the destination.
+ */
+export function mergeCustomizer(objValue: JsonObject, srcValue: JsonObject): any[] | undefined {
   if (isArray(objValue)) {
     return objValue.concat(srcValue);
   }
 }
 
-// merge two objects at a given path and update the tree. One of the objects can be just the delta (lodash mergeWith)
-export function mergeJsonTree(tree: Tree, path: string, jsonA: JsonObject, JsonB: JsonObject) {
+/**
+ * Combine two JSON objects and update the tree.
+ */
+export function mergeJsonTree(
+  tree: Tree,
+  path: string,
+  jsonA: JsonObject,
+  JsonB: JsonObject
+): Tree {
   const jsonString = JSON.stringify(mergeJson(jsonA, JsonB), null, 2);
 
   tree.overwrite(path, jsonString);
@@ -46,24 +68,29 @@ export function mergeJsonTree(tree: Tree, path: string, jsonA: JsonObject, JsonB
   return tree;
 }
 
-export interface PackageJsonDep {
-  name: string;
-  version?: string;
+/**
+ * Update the package.json with a mergeObject that defines the differences.
+ */
+export function mergePackageJson(tree: Tree, mergeObject: JsonObject, path = PkgJson.Path): Tree {
+  return mergeJsonTree(tree, path, parseJsonAtPath(tree, path), mergeObject);
 }
 
+/**
+ * Add a package json dependency (dev, devDep) setting version as the from npm.
+ */
 export function addPackageJsonDep(
   tree: Tree,
   type: NodeDependencyType,
   deps: PackageJsonDep[],
   path = PkgJson.Path,
   context?: SchematicContext
-) {
+): Observable<Tree> {
   return of(...deps).pipe(
     concatMap((pkg) => (pkg.version ? of(pkg) : getLatestNodeVersion(pkg.name))),
     map((packageFromRegistry: NodePackage) => {
       const { name, version } = packageFromRegistry;
       if (context) {
-        context.logger.debug(`Adding ${name}:${version} to ${NodeDependencyType.Dev}`);
+        context.logger.debug(`Adding ${name}:${version} to ${type}`);
       }
 
       return mergePackageJson(tree, { [type]: { [name]: version } }, path);
