@@ -21,7 +21,9 @@ export function filterExistingPath(tree: Tree, filePath: string, context?: Schem
     : noop();
 }
 
-// return the matching nodes based on the predicate or all the nodes.
+/**
+ * Return the matching nodes based on the predicate or all the nodes.
+ */
 export function findSourceNodes(
   sourceFile: ts.SourceFile,
   filter: (node: ts.Node) => boolean,
@@ -53,6 +55,9 @@ export function findSourceNodes(
   return result;
 }
 
+/**
+ * Update file, creating it if doesn't exist
+ */
 export function createOrUpdate(host: Tree, path: string, content: string) {
   if (host.exists(path)) {
     host.overwrite(path, content);

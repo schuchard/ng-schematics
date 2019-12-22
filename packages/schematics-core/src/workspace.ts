@@ -10,11 +10,6 @@ export interface ProjectOptions {
   projectSourceRoot: string;
 }
 
-export function getWorkspacePath(host: Tree) {
-  const possibleFiles = ['/workspace.json', '/angular.json', '/.angular.json'];
-  return possibleFiles.filter((path) => host.exists(path))[0];
-}
-
 export function updateWorkspaceInTree<T = any, O = T>(
   callback: (json: T, context: SchematicContext) => O
 ): Rule {
@@ -57,6 +52,12 @@ function createHost(tree: Tree): workspaces.WorkspaceHost {
     },
   };
 }
+
+export function getWorkspacePath(host: Tree) {
+  const possibleFiles = ['/workspace.json', '/angular.json', '/.angular.json'];
+  return possibleFiles.filter((path) => host.exists(path))[0];
+}
+
 export async function getWorkspace(tree: Tree, path = '/'): Promise<WorkspaceDefinition> {
   const host = createHost(tree);
 
