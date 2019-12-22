@@ -1,6 +1,7 @@
-import { Tree, SchematicsException, SchematicContext } from '@angular-devkit/schematics';
+import { Tree, SchematicsException, SchematicContext, Rule } from '@angular-devkit/schematics';
 import { parseJsonAst, JsonParseMode, JsonObject } from '@angular-devkit/core';
 import { PkgJson, NodeDependencyType, getLatestNodeVersion, NodePackage } from './npm';
+import * as stripJsonComments from 'strip-json-comments';
 import { isArray, mergeWith } from 'lodash';
 import { of, Observable } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
@@ -33,6 +34,41 @@ export function parseJsonAtPath(tree: Tree, path: string): JsonObject {
   }
 
   return json.value;
+}
+
+/**
+ * Read a JSON file.
+ */
+export function readJsonInTree<T = any>(host: Tree, path: string): T {
+  if (!host.exists(path)) {
+    throw new Error(`Cannot find ${path}`);
+  }
+  const contents = stripJsonComments(host.read(path)!.toString('utf-8'));
+  try {
+    return JSON.parse(contents);
+  } catch (e) {
+    throw new Error(`Cannot parse ${path}: ${e.message}`);
+  }
+}
+
+/**
+ * This method is specifically for updating JSON in a Tree
+ * @param path Path of JSON file in the Tree
+ * @param callback Manipulation of the JSON data
+ * @returns A rule which updates a JSON file file in a Tree
+ */
+export function updateJsonInTree<T = any, O = T>(
+  path: string,
+  callback: (json: T, context: SchematicContext) => O
+): Rule {
+  return (host: Tree, context: SchematicContext): Tree => {
+    if (!host.exists(path)) {
+      host.create(path, serializeJson(callback({} as T, context)));
+      return host;
+    }
+    host.overwrite(path, serializeJson(callback(readJsonInTree(host, path), context)));
+    return host;
+  };
 }
 
 /**

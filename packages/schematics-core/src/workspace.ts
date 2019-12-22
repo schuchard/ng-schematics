@@ -1,12 +1,38 @@
-import { Tree } from '@angular-devkit/schematics';
+import { Tree, SchematicContext, Rule } from '@angular-devkit/schematics';
 import { virtualFs, workspaces } from '@angular-devkit/core';
 import { parsePath } from './path';
 import { WorkspaceDefinition } from '@angular-devkit/core/src/workspace';
+import { serializeJson, readJsonInTree } from './json';
 
 export interface ProjectOptions {
   project: string;
   projectRoot: string;
   projectSourceRoot: string;
+}
+
+export function getWorkspacePath(host: Tree) {
+  const possibleFiles = ['/workspace.json', '/angular.json', '/.angular.json'];
+  return possibleFiles.filter((path) => host.exists(path))[0];
+}
+
+export function updateWorkspaceInTree<T = any, O = T>(
+  callback: (json: T, context: SchematicContext) => O
+): Rule {
+  return (host: Tree, context: SchematicContext): Tree => {
+    const path = getWorkspacePath(host);
+    host.overwrite(path, serializeJson(callback(readJsonInTree(host, path), context)));
+    return host;
+  };
+}
+
+export function getProjectConfig(host: Tree, name: string): any {
+  const workspaceJson = readJsonInTree(host, getWorkspacePath(host));
+  const projectConfig = workspaceJson?.projects[name];
+  if (!projectConfig) {
+    throw new Error(`Cannot find project '${name}'`);
+  } else {
+    return projectConfig;
+  }
 }
 
 function createHost(tree: Tree): workspaces.WorkspaceHost {
