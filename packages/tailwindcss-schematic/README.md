@@ -10,6 +10,10 @@ A schematic that makes it easy to use Tailwind CSS with Angular projects. Tailwi
 
 🤔[Why Tailwind](https://tailwindcss.com/#what-is-tailwind)
 
+## Demo App
+<a href="https://ng-tailwind.netlify.com" align="center"><img src="https://user-images.githubusercontent.com/10186449/71378551-256bed00-25c0-11ea-94d9-327fab8c50d8.png">
+</a>
+
 ## Getting Started
 
 ```bash
