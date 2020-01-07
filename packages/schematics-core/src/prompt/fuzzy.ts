@@ -41,7 +41,7 @@ export function fuzzySearch({ choices }: { choices: IFuzzySearch[] }) {
   };
 }
 
-export function autoCompletePrompt<T>(
+export function autoCompletePrompt<T extends Record<string, any>>(
   source: InquirerSearchSource,
   {
     message, // prompt for selection
