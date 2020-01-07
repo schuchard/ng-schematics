@@ -1,22 +1,5 @@
 version: 2.1
 jobs:
-  build:
-    docker:
-      - image: 'circleci/node:10.16.1-browsers'
-    steps:
-      - checkout
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-
-      - run: yarn bootstrap
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
   test-unit:
     docker:
       - image: 'circleci/node:10.16.1-browsers'
@@ -34,7 +17,4 @@ workflows:
   version: 2.1
   build-test:
     jobs:
-      - build
       - test-unit:
-          requires:
-            - build
