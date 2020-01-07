@@ -1,46 +1,46 @@
 import { getWorkspaceTree } from './test-utils';
 import test from 'ava';
 
-import { getWorkspaceConfig } from './workspace';
+import { determineProject } from './workspace';
 
-test('find a projects name', async (t) => {
+test('determineProject: find a projects name', async (t) => {
   const tree = await getWorkspaceTree({ appName: 'testApp' });
 
-  const { projectName } = await getWorkspaceConfig(tree);
+  const { projectName } = await determineProject(tree);
 
   t.is(projectName, 'testApp');
 });
 
-test('find a projects root', async (t) => {
+test('determineProject: find a projects root', async (t) => {
   const tree = await getWorkspaceTree();
 
-  const { projectRoot } = await getWorkspaceConfig(tree);
+  const { projectRoot } = await determineProject(tree);
 
   t.is(projectRoot, 'projects/bar');
 });
 
-test('find a projects source root', async (t) => {
+test('determineProject: find a projects source root', async (t) => {
   const tree = await getWorkspaceTree();
 
-  const { projectSourceRoot } = await getWorkspaceConfig(tree);
+  const { projectSourceRoot } = await determineProject(tree);
 
   t.is(projectSourceRoot, 'projects/bar/src');
 });
 
-test('find a projects angular.json value', async (t) => {
+test('determineProject: find a projects angular.json value', async (t) => {
   const tree = await getWorkspaceTree();
 
-  const { projectConfig } = await getWorkspaceConfig(tree);
+  const { projectConfig } = await determineProject(tree);
 
   t.assert(projectConfig.architect);
   t.is(projectConfig.prefix, 'app');
   t.is(projectConfig.root, 'projects/bar');
 });
 
-test("find the tree's angular.json value", async (t) => {
+test("determineProject: find the tree's angular.json value", async (t) => {
   const tree = await getWorkspaceTree();
 
-  const { angularConfig } = await getWorkspaceConfig(tree);
+  const { angularConfig } = await determineProject(tree);
 
   t.assert(angularConfig.projects);
   t.is(angularConfig.defaultProject, 'bar');
