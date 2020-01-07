@@ -13,8 +13,3 @@ jobs:
       - run: yarn bootstrap
       - run: yarn build
       - run: yarn test:unit
-workflows:
-  version: 2.1
-  build-test:
-    jobs:
-      - test-unit:
