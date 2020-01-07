@@ -18,6 +18,7 @@ import {
   parseJsonAtPath,
   parsePath,
   applyLintFix,
+  ProjectOptions,
 } from '@schuchard/schematics-core';
 import { concat, Observable } from 'rxjs';
 
@@ -27,17 +28,19 @@ export const enum Paths {
   TailwindStyles = 'tailwind.scss',
 }
 
-interface SchematicOptions {
+interface SchematicOptions extends ProjectOptions {
   project: string;
   webpackConfigPath: string;
   projectRoot: string;
-  projectSourceRoot: string;
 }
 
 export function tailwindSchematic(options: SchematicOptions): Rule {
   return async (tree: Tree, _context: SchematicContext) => {
-    const { workspace } = await determineProject(tree, options.project);
-    options = { ...options, ...workspace };
+    const { projectName, projectRoot, projectSourceRoot } = await determineProject(
+      tree,
+      options.project
+    );
+    options = { ...options, projectName, projectRoot, projectSourceRoot };
 
     return chain([
       updateDependencies(),
