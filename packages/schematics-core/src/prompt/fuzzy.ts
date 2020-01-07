@@ -22,7 +22,7 @@ export function autoCompleteDecoratorFiles(choices: IMapAstQuery[]): Promise<IMa
 }
 
 export function fuzzySearch({ choices }: { choices: IFuzzySearch[] }) {
-  return async (previousAnswers: any, input: string) => {
+  return async (input: string) => {
     input = input || '';
 
     const results = await fuzzy
