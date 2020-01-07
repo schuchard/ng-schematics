@@ -1147,7 +1147,7 @@
   dependencies:
     any-observable "^0.3.0"
 
-"@schematics/angular@^8.3.20":
+"@schematics/angular@8.3.20", "@schematics/angular@^8.3.20":
   version "8.3.20"
   resolved "https://registry.yarnpkg.com/@schematics/angular/-/angular-8.3.20.tgz#737d0a73e891446899a2267c4cc348b6c5a78ca8"
   integrity sha512-Y20pSJhQ0KQd8Tk2kPQlmpRDNDaoIKMeOOGLT2FgCFrumxZXuIbBgN9fGDgW40iI2sq80bccOeo24RKkn3QpcA==
