@@ -69,7 +69,8 @@ function updateDependencies(): Rule {
 function updateAngularJson(options: SchematicOptions): Rule {
   return (tree: Tree, _context: SchematicContext) => {
     const angularJson = parseJsonAtPath(tree, './angular.json') as any;
-    const { project, projectSourceRoot } = options;
+    const { projectName, projectSourceRoot } = options;
+
     const stylesheetPath = parsePath(`${projectSourceRoot}/${Paths.TailwindStyles}`).path;
     const webpackConfig = {
       customWebpackConfig: {
@@ -80,7 +81,7 @@ function updateAngularJson(options: SchematicOptions): Rule {
 
     const updates = {
       projects: {
-        [project]: {
+        [projectName]: {
           architect: {
             build: {
               builder: `${builder}:browser`,
