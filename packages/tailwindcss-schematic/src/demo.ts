@@ -7,9 +7,9 @@ interface SchematicOptions {
 
 export default function index(options: SchematicOptions): Rule {
   return async (tree: Tree, _context: SchematicContext) => {
-    const { workspace } = await determineProject(tree);
+    const { projectSourceRoot } = await determineProject(tree);
 
-    return chain([addTailwindMarkup(workspace.projectSourceRoot, options)]);
+    return chain([addTailwindMarkup(projectSourceRoot, options)]);
   };
 }
 

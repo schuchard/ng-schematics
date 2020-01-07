@@ -1,12 +1,44 @@
-import { Tree } from '@angular-devkit/schematics';
+import { Tree, SchematicContext, Rule } from '@angular-devkit/schematics';
 import { virtualFs, workspaces } from '@angular-devkit/core';
 import { parsePath } from './path';
 import { WorkspaceDefinition } from '@angular-devkit/core/src/workspace';
+import { serializeJson, readJsonInTree } from './json';
 
 export interface ProjectOptions {
-  project: string;
+  projectName: string;
   projectRoot: string;
   projectSourceRoot: string;
+  projectConfig: Record<string, any>;
+  angularConfig: Record<string, any>;
+}
+
+export function updateWorkspaceInTree<T = any, O = T>(
+  callback: (json: T, context: SchematicContext) => O
+): Rule {
+  return (host: Tree, context: SchematicContext): Tree => {
+    const path = getWorkspacePath(host);
+    host.overwrite(path, serializeJson(callback(readJsonInTree(host, path), context)));
+    return host;
+  };
+}
+
+export function getProjectConfig(host: Tree, name: string): any {
+  const workspaceJson = readJsonInTree(host, getWorkspacePath(host));
+  const projectConfig = workspaceJson?.projects[name];
+  if (!projectConfig) {
+    throw new Error(`Cannot find project '${name}'`);
+  } else {
+    return projectConfig;
+  }
+}
+
+export function getWorkspaceConfig(host: Tree): any {
+  const workspaceJson = readJsonInTree(host, getWorkspacePath(host));
+  if (!workspaceJson) {
+    throw new Error(`Cannot find workspace config (angular.json)`);
+  } else {
+    return workspaceJson;
+  }
 }
 
 function createHost(tree: Tree): workspaces.WorkspaceHost {
@@ -31,6 +63,12 @@ function createHost(tree: Tree): workspaces.WorkspaceHost {
     },
   };
 }
+
+export function getWorkspacePath(host: Tree) {
+  const possibleFiles = ['/workspace.json', '/angular.json', '/.angular.json'];
+  return possibleFiles.filter((path) => host.exists(path))[0];
+}
+
 export async function getWorkspace(tree: Tree, path = '/'): Promise<WorkspaceDefinition> {
   const host = createHost(tree);
 
@@ -39,10 +77,7 @@ export async function getWorkspace(tree: Tree, path = '/'): Promise<WorkspaceDef
   return workspace;
 }
 
-export async function determineProject(
-  tree: Tree,
-  projectName?: string
-): Promise<{ workspace: ProjectOptions }> {
+export async function determineProject(tree: Tree, projectName?: string): Promise<ProjectOptions> {
   const ws = await getWorkspace(tree);
 
   const name: string = projectName || (ws.extensions.defaultProject as string);
@@ -52,12 +87,11 @@ export async function determineProject(
     throw new Error('No project found in workspace');
   }
 
-  // update with project metadata
-  const workspace = {
-    project: name,
+  return {
+    projectName: name,
     projectRoot: parsePath(project.root).path,
     projectSourceRoot: parsePath(project.sourceRoot || '').path,
+    projectConfig: getProjectConfig(tree, name),
+    angularConfig: getWorkspaceConfig(tree),
   };
-
-  return { workspace };
 }
