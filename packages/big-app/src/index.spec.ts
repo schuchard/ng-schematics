@@ -2,45 +2,14 @@ import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/te
 import test from 'ava';
 import { JsonObject } from '@angular-devkit/core';
 
-test('run test', async (t) => {
+test('scaffolds the base files', async (t) => {
   const { files } = await runSchematic();
-  console.log(files);
-  t.fail();
+
+  t.assert(files.includes('/angular.json'));
+  t.assert(files.includes('/projects/app-one/src/app/app.module.ts'));
+  t.assert(files.includes('/projects/app-two/src/app/app.module.ts'));
+  t.assert(files.includes('/projects/lib-one/src/lib/lib-one.module.ts'));
 });
-
-// async function getWorkspaceTree(appName = 'bar') {
-//   const ngRunner = new SchematicTestRunner('@schematics/angular', '');
-
-//   const workspaceOptions = {
-//     name: 'workspace',
-//     newProjectRoot: 'projects',
-//     version: '6.0.0',
-//     defaultProject: appName,
-//   };
-
-//   const appOptions = {
-//     name: appName,
-//     inlineTemplate: false,
-//     routing: false,
-//     skipTests: false,
-//     skipPackageJson: false,
-//   };
-
-//   let appTree = await ngRunner.runSchematicAsync('workspace', workspaceOptions).toPromise();
-//   appTree = await ngRunner.runSchematicAsync('application', appOptions, appTree).toPromise();
-
-//   return appTree;
-// }
-
-// async function getApplicationTree() {
-//   const schematicRunner = new SchematicTestRunner('@schematics/angular', '');
-//   const defaultOptions = {
-//     name: 'foo',
-//     directory: 'bar',
-//     version: '6.0.0',
-//   };
-//   return await schematicRunner.runSchematicAsync('ng-new', defaultOptions).toPromise();
-// }
 
 async function runSchematic(options: JsonObject = {}, command = 'ng-add'): Promise<UnitTestTree> {
   const schematicRunner = new SchematicTestRunner('big-app', require.resolve('../collection.json'));
