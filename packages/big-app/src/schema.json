@@ -1,0 +1,8 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "id": "big-app-schematic",
+  "title": "Big App Options Schema",
+  "type": "object",
+  "properties": {},
+  "required": []
+}

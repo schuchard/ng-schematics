@@ -1,0 +1,10 @@
+{
+  "$schema": "../../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "ng-add": {
+      "description": "Scaffold out a big application.",
+      "factory": "./dist/index",
+      "schema": "./dist/schema.json"
+    }
+  }
+}
