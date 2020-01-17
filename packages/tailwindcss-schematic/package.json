@@ -36,7 +36,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/schuchard/ng-tools/tree/master/packages/tailwindcss-schematic",
+    "url": "https://github.com/schuchard/ng-schematics/tree/master/packages/tailwindcss-schematic",
     "directory": "packages/tailwindcss-schematic"
   },
   "files": [

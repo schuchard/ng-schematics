@@ -48,5 +48,10 @@
   },
   "devDependencies": {
     "@types/inquirer": "6.5.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/schuchard/ng-schematics/tree/master/packages/@schuchard/schematics-core",
+    "directory": "packages/@schuchard/schematics-core"
   }
 }
