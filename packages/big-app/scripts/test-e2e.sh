@@ -5,8 +5,6 @@ echo "linking sandbox"
 yarn link:sandbox
 
 echo "executing schematic"
-cd ../../sandbox/test-workspace &&
-
-yarn &&
+cd ../../sandbox
 
 ./node_modules/.bin/ng add big-app

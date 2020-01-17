@@ -5,6 +5,8 @@ import { JsonObject } from '@angular-devkit/core';
 test('scaffolds the base files', async (t) => {
   const { files } = await runSchematic();
 
+  console.log(files);
+
   t.assert(files.includes('/angular.json'));
   t.assert(files.includes('/projects/app-one/src/app/app.module.ts'));
   t.assert(files.includes('/projects/app-two/src/app/app.module.ts'));

@@ -18,6 +18,9 @@ export default function index(_options: SchematicOptions): Rule {
       externalSchematic('@schematics/angular', 'library', {
         name: 'lib-one',
       }),
+      chain(
+        ['a', 'b', 'c', 'd', 'e'].map((route) => scaffoldModule({ project: 'app-one', route }))
+      ),
     ]);
   };
 }
@@ -31,6 +34,24 @@ function createApplication(config: { name: string }): Rule {
       routing: true,
       skipTests: false,
       skipPackageJson: false,
+    }),
+  ]);
+}
+
+function scaffoldModule(opt: {
+  project: string;
+  route?: string;
+  name?: string;
+  moduleName?: string;
+  routing?: boolean;
+}): Rule {
+  return chain([
+    externalSchematic('@schematics/angular', 'module', {
+      routing: opt.routing,
+      project: opt.project,
+      route: opt.route ?? opt.project,
+      module: opt.moduleName ?? 'app',
+      name: opt.name ?? opt.route ?? opt.project,
     }),
   ]);
 }
