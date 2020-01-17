@@ -5,6 +5,4 @@ echo "linking sandbox"
 yarn link:sandbox
 
 echo "executing schematic"
-cd ../../sandbox
-
-./node_modules/.bin/ng add big-app
+cd ../../sandbox && ng new --collection=big-app
