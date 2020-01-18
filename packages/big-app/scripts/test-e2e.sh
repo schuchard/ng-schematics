@@ -5,4 +5,9 @@ echo "linking sandbox"
 yarn link:sandbox
 
 echo "executing schematic"
-cd ../../sandbox && ng new --collection=big-app
+cd ../../sandbox
+
+mkdir big-app
+cd big-app
+
+ng new --collection=big-app
