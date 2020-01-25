@@ -18,11 +18,11 @@ export default function index(_options: SchematicOptions): Rule {
         newProjectRoot: 'projects',
         version: '8.0.0',
       }),
-      createApplication({ name: 'app-one' }),
-      createApplication({ name: 'app-two' }),
       externalSchematic('@schematics/angular', 'library', {
         name: 'lib-one',
       }),
+      createApplication({ name: 'app-one' }),
+      createApplication({ name: 'app-two' }),
       chain(
         generateNames(modules, 'mod').map((module) => {
           return chain([
