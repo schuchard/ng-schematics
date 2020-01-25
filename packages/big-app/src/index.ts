@@ -1,11 +1,16 @@
 import { chain, Rule, SchematicContext, Tree, externalSchematic } from '@angular-devkit/schematics';
-import { ProjectOptions } from '@schuchard/schematics-core';
 
-interface SchematicOptions extends ProjectOptions {
-  project: string;
+interface SchematicOptions {
+  modules: string;
+  components: string;
 }
 
+const strId = require('incstr');
+
 export default function index(_options: SchematicOptions): Rule {
+  const modules = getPositiveNumber(_options.modules);
+  const components = getPositiveNumber(_options.components);
+
   return async (_tree: Tree, _context: SchematicContext) => {
     return chain([
       externalSchematic('@schematics/angular', 'workspace', {
@@ -19,10 +24,10 @@ export default function index(_options: SchematicOptions): Rule {
         name: 'lib-one',
       }),
       chain(
-        ['am', 'bm', 'cm', 'dm', 'em'].map((module) => {
+        generateNames(modules, 'mod').map((module) => {
           return chain([
             scaffoldModule({ project: 'app-one', route: module, routing: true }),
-            ...['ac', 'bc'].map((component) =>
+            ...generateNames(components, 'comp').map((component) =>
               scaffoldComponent({ name: `${module}-${component}`, module, project: 'app-one' })
             ),
           ]);
@@ -78,4 +83,24 @@ function scaffoldComponent({
     ...(project && { project }),
     ...(project && module && { path: `projects/${project}/src/app/${module}` }),
   });
+}
+
+function getPositiveNumber(input: string): number {
+  const number = Math.abs(parseInt(input, 10));
+
+  if (Number.isNaN(number)) {
+    throw new Error(`${input} is not a valid number`);
+  }
+
+  return number;
+}
+
+export function generateNames(count: number, type: 'mod' | 'comp'): string[] {
+  const incstr = strId.idGenerator({
+    suffix: `-${type}`,
+    numberlike: false,
+    alphabet: 'abcdefghijklmnopqrstuvwxyz',
+  });
+
+  return Array.from(new Array(count), () => incstr());
 }

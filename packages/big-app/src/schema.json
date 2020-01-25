@@ -3,6 +3,17 @@
   "id": "big-app-schematic",
   "title": "Big App Options Schema",
   "type": "object",
-  "properties": {},
+  "properties": {
+    "modules": {
+      "type": "string",
+      "description": "The number of routed modules to add.",
+      "x-prompt": "Number of routed modules?"
+    },
+    "components": {
+      "type": "string",
+      "description": "The number of components to add to each module.",
+      "x-prompt": "Number of components per module?"
+    }
+  },
   "required": []
 }

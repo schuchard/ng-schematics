@@ -1,6 +1,7 @@
 import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
 import test from 'ava';
 import { JsonObject } from '@angular-devkit/core';
+import { generateNames } from './index';
 
 test('scaffolds the base files', async (t) => {
   const { files } = await runSchematic();
@@ -18,3 +19,19 @@ async function runSchematic(options: JsonObject = {}, command = 'ng-add'): Promi
 
   return await schematicRunner.runSchematicAsync(command, options).toPromise();
 }
+
+test('generate names should create unique ids a_mod', (t) => {
+  t.is(generateNames(100, 'mod')[0], 'a_mod');
+});
+
+test('generate names should create unique ids z_mod', (t) => {
+  t.is(generateNames(100, 'mod')[25], 'z_mod');
+});
+
+test('generate names should create unique ids aa_mod', (t) => {
+  t.is(generateNames(100, 'mod')[26], 'aa_mod');
+});
+
+test('generate names should create unique ids af_mod', (t) => {
+  t.is(generateNames(100, 'mod')[52], 'ba_mod');
+});
