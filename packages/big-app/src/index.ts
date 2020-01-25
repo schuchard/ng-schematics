@@ -23,7 +23,7 @@ export default function index(_options: SchematicOptions): Rule {
           return chain([
             scaffoldModule({ project: 'app-one', route: module, routing: true }),
             ...['ac', 'bc'].map((component) =>
-              scaffoldComponent({ name: component, module, project: 'app-one' })
+              scaffoldComponent({ name: `${module}-${component}`, module, project: 'app-one' })
             ),
           ]);
         })
@@ -74,7 +74,8 @@ function scaffoldComponent({
 }): Rule {
   return externalSchematic('@schematics/angular', 'component', {
     name: name,
-    ...(!!module && { module: `${module}` }),
-    ...(!!project && { project }),
+    ...(module && { module: `${module}` }),
+    ...(project && { project }),
+    ...(project && module && { path: `projects/${project}/src/app/${module}` }),
   });
 }
