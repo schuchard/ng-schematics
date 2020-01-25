@@ -4,9 +4,9 @@ import { JsonObject } from '@angular-devkit/core';
 import { generateNames } from './index';
 
 test('scaffolds the base files', async (t) => {
-  const { files } = await runSchematic();
+  const { files } = await runSchematic({ modules: '3', components: '3' });
 
-  console.log(files);
+  // console.log(files);
 
   t.assert(files.includes('/angular.json'));
   t.assert(files.includes('/projects/app-one/src/app/app.module.ts'));
@@ -20,18 +20,18 @@ async function runSchematic(options: JsonObject = {}, command = 'ng-add'): Promi
   return await schematicRunner.runSchematicAsync(command, options).toPromise();
 }
 
-test('generate names should create unique ids a_mod', (t) => {
-  t.is(generateNames(100, 'mod')[0], 'a_mod');
+test('generate names should create unique ids a-mod', (t) => {
+  t.is(generateNames(100, 'mod')[0], 'a-mod');
 });
 
-test('generate names should create unique ids z_mod', (t) => {
-  t.is(generateNames(100, 'mod')[25], 'z_mod');
+test('generate names should create unique ids z-mod', (t) => {
+  t.is(generateNames(100, 'mod')[25], 'z-mod');
 });
 
-test('generate names should create unique ids aa_mod', (t) => {
-  t.is(generateNames(100, 'mod')[26], 'aa_mod');
+test('generate names should create unique ids aa-mod', (t) => {
+  t.is(generateNames(100, 'mod')[26], 'aa-mod');
 });
 
-test('generate names should create unique ids af_mod', (t) => {
-  t.is(generateNames(100, 'mod')[52], 'ba_mod');
+test('generate names should create unique ids af-mod', (t) => {
+  t.is(generateNames(100, 'mod')[52], 'ba-mod');
 });
