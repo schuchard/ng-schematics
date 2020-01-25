@@ -5,5 +5,6 @@ export * from './src/path';
 export * from './src/workspace';
 export * from './src/tree';
 export * from './src/lint-fix';
+export * from './src/test-utils';
 
 export const prompt = prompts;
