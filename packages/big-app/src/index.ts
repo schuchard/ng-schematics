@@ -19,7 +19,14 @@ export default function index(_options: SchematicOptions): Rule {
         name: 'lib-one',
       }),
       chain(
-        ['a', 'b', 'c', 'd', 'e'].map((route) => scaffoldModule({ project: 'app-one', route }))
+        ['am', 'bm', 'cm', 'dm', 'em'].map((module) => {
+          return chain([
+            scaffoldModule({ project: 'app-one', route: module, routing: true }),
+            ...['ac', 'bc'].map((component) =>
+              scaffoldComponent({ name: component, module, project: 'app-one' })
+            ),
+          ]);
+        })
       ),
     ]);
   };
@@ -54,4 +61,20 @@ function scaffoldModule(opt: {
       name: opt.name ?? opt.route ?? opt.project,
     }),
   ]);
+}
+
+function scaffoldComponent({
+  name,
+  module,
+  project,
+}: {
+  name: string;
+  module: string;
+  project: string;
+}): Rule {
+  return externalSchematic('@schematics/angular', 'component', {
+    name: name,
+    ...(!!module && { module: `${module}` }),
+    ...(!!project && { project }),
+  });
 }
