@@ -1,7 +1,7 @@
 import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
 import test from 'ava';
 import { JsonObject } from '@angular-devkit/core';
-import { generateNames } from './index';
+import { generateIdentifiers } from './index';
 
 test('scaffolds the base files', async (t) => {
   const { files } = await runSchematic({ modules: '3', components: '3' });
@@ -21,17 +21,17 @@ async function runSchematic(options: JsonObject = {}, command = 'ng-add'): Promi
 }
 
 test('generate names should create unique ids a-mod', (t) => {
-  t.is(generateNames(100, 'mod')[0], 'a-mod');
+  t.is(generateIdentifiers(100, 'mod')[0], 'a-mod');
 });
 
 test('generate names should create unique ids z-mod', (t) => {
-  t.is(generateNames(100, 'mod')[25], 'z-mod');
+  t.is(generateIdentifiers(100, 'mod')[25], 'z-mod');
 });
 
 test('generate names should create unique ids aa-mod', (t) => {
-  t.is(generateNames(100, 'mod')[26], 'aa-mod');
+  t.is(generateIdentifiers(100, 'mod')[26], 'aa-mod');
 });
 
 test('generate names should create unique ids af-mod', (t) => {
-  t.is(generateNames(100, 'mod')[52], 'ba-mod');
+  t.is(generateIdentifiers(100, 'mod')[52], 'ba-mod');
 });
