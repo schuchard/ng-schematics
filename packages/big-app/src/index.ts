@@ -30,6 +30,12 @@ export default function index(_options: SchematicOptions): Rule {
             ...generateNames(components, 'comp').map((component) =>
               scaffoldComponent({ name: `${module}-${component}`, module, project: 'app-one' })
             ),
+            scaffoldComponent({
+              name: `${module}-component`,
+              module,
+              project: 'app-one',
+              options: { flat: true },
+            }),
           ]);
         })
       ),
@@ -72,16 +78,19 @@ function scaffoldComponent({
   name,
   module,
   project,
+  options,
 }: {
   name: string;
   module: string;
   project: string;
+  options?: any;
 }): Rule {
   return externalSchematic('@schematics/angular', 'component', {
     name: name,
     ...(module && { module: `${module}` }),
     ...(project && { project }),
     ...(project && module && { path: `projects/${project}/src/app/${module}` }),
+    ...options,
   });
 }
 
