@@ -7,12 +7,14 @@
     "modules": {
       "type": "string",
       "description": "The number of routed modules to add.",
-      "x-prompt": "Number of routed modules?"
+      "x-prompt": "Number of routed modules?",
+      "default": "5"
     },
     "components": {
       "type": "string",
       "description": "The number of components to add to each module.",
-      "x-prompt": "Number of components per module?"
+      "x-prompt": "Number of components per module?",
+      "default": "5"
     }
   },
   "required": []

@@ -10,4 +10,4 @@ cd ../../sandbox
 mkdir big-app
 cd big-app
 
-ng new --collection=big-app
+ng new --collection=big-app --modules 3 --components 3

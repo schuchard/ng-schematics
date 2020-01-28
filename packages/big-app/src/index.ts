@@ -18,18 +18,19 @@ export default function index(_options: SchematicOptions): Rule {
         newProjectRoot: 'projects',
         version: '8.0.0',
       }),
+      createApplication({ name: 'app-one' }),
+      createApplication({ name: 'app-two' }),
       externalSchematic('@schematics/angular', 'library', {
         name: 'lib-one',
       }),
-      createApplication({ name: 'app-one' }),
-      createApplication({ name: 'app-two' }),
       chain(
-        generateNames(modules, 'mod').map((module) => {
+        generateIdentifiers(modules, 'mod').map((module) => {
           return chain([
             scaffoldModule({ project: 'app-one', route: module, routing: true }),
-            ...generateNames(components, 'comp').map((component) =>
+            ...generateIdentifiers(components, 'comp').map((component) =>
               scaffoldComponent({ name: `${module}-${component}`, module, project: 'app-one' })
             ),
+            // root component for lazy module
             scaffoldComponent({
               name: `${module}-component`,
               module,
@@ -104,7 +105,7 @@ function getPositiveNumber(input: string): number {
   return number;
 }
 
-export function generateNames(count: number, type: 'mod' | 'comp'): string[] {
+export function generateIdentifiers(count: number, type: 'mod' | 'comp'): string[] {
   const incstr = strId.idGenerator({
     suffix: `-${type}`,
     numberlike: false,
