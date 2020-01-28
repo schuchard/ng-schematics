@@ -8,8 +8,8 @@ interface SchematicOptions {
 const strId = require('incstr');
 
 export default function index(_options: SchematicOptions): Rule {
-  const modules = getPositiveNumber(_options.modules);
-  const components = getPositiveNumber(_options.components);
+  const modules = generateIdentifiers(getPositiveNumber(_options.modules), 'mod');
+  const components = generateIdentifiers(getPositiveNumber(_options.components), 'comp');
 
   return async (_tree: Tree, _context: SchematicContext) => {
     return chain([
@@ -24,10 +24,10 @@ export default function index(_options: SchematicOptions): Rule {
         name: 'lib-one',
       }),
       chain(
-        generateIdentifiers(modules, 'mod').map((module) => {
+        modules.map((module) => {
           return chain([
             scaffoldModule({ project: 'app-one', route: module, routing: true }),
-            ...generateIdentifiers(components, 'comp').map((component) =>
+            ...components.map((component) =>
               scaffoldComponent({ name: `${module}-${component}`, module, project: 'app-one' })
             ),
             // root component for lazy module
