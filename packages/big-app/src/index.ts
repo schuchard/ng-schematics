@@ -95,7 +95,7 @@ function scaffoldComponent({
   });
 }
 
-function getPositiveNumber(input: string): number {
+export function getPositiveNumber(input: string): number {
   const number = Math.abs(parseInt(input, 10));
 
   if (Number.isNaN(number)) {

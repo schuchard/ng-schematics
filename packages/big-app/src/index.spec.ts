@@ -1,7 +1,7 @@
 import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
 import test from 'ava';
 import { JsonObject } from '@angular-devkit/core';
-import { generateIdentifiers } from './index';
+import { generateIdentifiers, getPositiveNumber } from './index';
 
 test('scaffolds the base files', async (t) => {
   const { files } = await runSchematic({ modules: '3', components: '4' });
@@ -58,6 +58,12 @@ test('generate names should create unique ids aa-mod', (t) => {
 
 test('generate names should create unique ids af-mod', (t) => {
   t.is(generateIdentifiers(100, 'mod')[52], 'ba-mod');
+});
+
+test('getPositiveNumber should convert a string to a positive number', (t) => {
+  t.is(getPositiveNumber('-1'), 1);
+  t.is(getPositiveNumber('0'), 0);
+  t.is(getPositiveNumber('1'), 1);
 });
 
 async function runSchematic(options: JsonObject = {}, command = 'ng-add'): Promise<UnitTestTree> {
