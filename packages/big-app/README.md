@@ -14,7 +14,7 @@ npm i -g big-app
 ng new --collection=big-app
 ```
 
-_or with inline options_
+Or with inline options:
 
 ```bash
 ng new --collection=big-app --modules 3 --components 3
