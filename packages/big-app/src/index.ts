@@ -30,13 +30,6 @@ export default function index(_options: SchematicOptions): Rule {
             ...components.map((component) =>
               scaffoldComponent({ name: `${module}-${component}`, module, project: 'app-one' })
             ),
-            // root component for lazy module
-            scaffoldComponent({
-              name: `${module}-component`,
-              module,
-              project: 'app-one',
-              options: { flat: true },
-            }),
           ]);
         })
       ),
