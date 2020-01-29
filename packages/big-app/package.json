@@ -1,0 +1,58 @@
+{
+  "name": "big-app",
+  "version": "0.0.1",
+  "description": "Scaffold out a big app",
+  "scripts": {
+    "clean:launch": "yarn clean && yarn launch",
+    "dev": "yarn build:clean:launch",
+    "publish": "yarn build",
+    "build": "bash ./scripts/build.sh",
+    "clean": "bash ./scripts/clean.sh",
+    "build:clean:launch": "yarn build && yarn clean && yarn launch",
+    "launch": "bash ./scripts/launch.sh",
+    "test": "yarn build:clean:launch && yarn test:sandbox && yarn clean",
+    "test:unit": "yarn build && ava",
+    "test:e2e": "bash ./scripts/test-e2e.sh",
+    "link:sandbox": "yarn link && cd ../../sandbox && yarn link big-app",
+    "test:sandbox": "cd ../../sandbox && yarn lint && yarn test && yarn build"
+  },
+  "keywords": [
+    "schematics",
+    "angular"
+  ],
+  "author": "Kevin Schuchard",
+  "license": "MIT",
+  "schematics": "./collection.json",
+  "dependencies": {
+    "@angular-devkit/core": "8.3.20",
+    "@angular-devkit/schematics": "8.3.20",
+    "@schematics/angular": "^8.3.20",
+    "@schuchard/schematics-core": "^0.3.1",
+    "incstr": "1.2.3",
+    "rxjs": "6.4.0"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/schuchard/ng-schematics/tree/master/packages/big-app",
+    "directory": "packages/big-app"
+  },
+  "files": [
+    "dist",
+    "collection.json"
+  ],
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "ava": {
+    "files": [
+      "src/**/*.spec.ts"
+    ],
+    "compileEnhancements": false,
+    "extensions": [
+      "ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ]
+  }
+}
