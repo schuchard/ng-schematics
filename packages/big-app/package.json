@@ -1,6 +1,6 @@
 {
   "name": "big-app",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Scaffold out a big app",
   "scripts": {
     "clean:launch": "yarn clean && yarn launch",
