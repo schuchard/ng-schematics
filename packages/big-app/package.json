@@ -1,6 +1,6 @@
 {
   "name": "big-app",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Scaffold out a big app",
   "scripts": {
     "clean:launch": "yarn clean && yarn launch",
@@ -27,7 +27,7 @@
     "@angular-devkit/core": "8.3.20",
     "@angular-devkit/schematics": "8.3.20",
     "@schematics/angular": "^8.3.20",
-    "@schuchard/schematics-core": "^0.4.1",
+    "@schuchard/schematics-core": "^0.4.2",
     "incstr": "1.2.3",
     "rxjs": "6.4.0"
   },
