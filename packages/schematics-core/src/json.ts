@@ -1,10 +1,10 @@
 import { Tree, SchematicsException, SchematicContext, Rule } from '@angular-devkit/schematics';
 import { parseJsonAst, JsonParseMode, JsonObject } from '@angular-devkit/core';
 import { PkgJson, NodeDependencyType, getLatestNodeVersion, NodePackage } from './npm';
-import * as stripJsonComments from 'strip-json-comments';
 import { isArray, mergeWith } from 'lodash';
 import { of, Observable } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
+import stripJsonComments from 'strip-json-comments';
 
 export interface PackageJsonDep {
   name: string;
