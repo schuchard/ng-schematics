@@ -1,8 +1,7 @@
-import inquirer from 'inquirer';
+import * as inquirer from 'inquirer';
 import { SchematicContext } from '@angular-devkit/schematics';
 
-inquirer.registerPrompt('fuzzypath', require('inquirer-fuzzy-path'));
-
+inquirer.registerPrompt('fileSystemSearch', require('inquirer-fuzzy-path'));
 export interface IQueryFileSystem {
   isDir: boolean;
   dir: string;

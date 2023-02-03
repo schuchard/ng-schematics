@@ -3,7 +3,6 @@
   "include": ["./index.ts"],
   "compilerOptions": {
     "outDir": "./dist",
-    "rootDir": ".",
-    "allowSyntheticDefaultImports": true
+    "rootDir": "."
   }
 }

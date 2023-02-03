@@ -55,7 +55,7 @@ export async function runSchematic(opt?: {
   collectionPath?: string;
 }): Promise<UnitTestTree> {
   const schematicRunner = new SchematicTestRunner(
-    opt?.name || 'schematics',
+    name,
     require.resolve(opt?.collectionPath || '../collection.json')
   );
 

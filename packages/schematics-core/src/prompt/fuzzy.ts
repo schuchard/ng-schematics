@@ -1,4 +1,4 @@
-import inquirer from 'inquirer';
+import * as inquirer from 'inquirer';
 import * as fuzzy from 'fuzzy';
 import stripAnsi from 'strip-ansi';
 
@@ -25,7 +25,7 @@ export function fuzzySearch({ choices }: { choices: IFuzzySearch[] }) {
   return async (input: string) => {
     input = input || '';
 
-    const results = fuzzy
+    const results = await fuzzy
       .filter(input, choices, {
         extract: (el) => el.displayString, // displayed during autocomplete selection
       })
